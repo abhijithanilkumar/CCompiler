@@ -1,6 +1,6 @@
 #include<stdio.h>
-/* This is a multi
-/*This is a comment */
+/* for for for This is a multi
+/*Heyy*/
 line comment*/ 
 int main() {
    int amount, rate, time, si;

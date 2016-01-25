@@ -3,19 +3,23 @@
  Lexeme					Token					Attribute Value
 
 #include<stdio.h>			Preprocessor Statement				***
+line					Variable					0
+comment					Variable					1
+*					Operator					
+/					Operator					
 int					Keyword						***
-main					Variable					0
+main					Variable					2
 (					Punctuator					
 )					Punctuator					
 {					Punctuator					
 int					Keyword						***
-amount					Variable					1
+amount					Variable					3
 ,					Punctuator					
-rate					Variable					2
+rate					Variable					4
 ,					Punctuator					
-time					Variable					3
+time					Variable					5
 ,					Punctuator					
-si					Variable					4
+si					Variable					6
 ;					Punctuator					
 ;					Punctuator					
 ;					Punctuator					
@@ -24,14 +28,14 @@ si					Variable					4
 ;					Punctuator					
 ;					Punctuator					
 ;					Punctuator					
-si					Variable					4
+si					Variable					6
 =					Punctuator					
 (					Punctuator					
-amount					Variable					1
+amount					Variable					3
 *					Operator					
-rate					Variable					2
+rate					Variable					4
 *					Operator					
-time					Variable					3
+time					Variable					5
 )					Punctuator					
 /					Operator					
 100					Constant					***
@@ -45,3 +49,8 @@ return					Keyword						***
 ;					Punctuator					
 }					Punctuator					
 }					Punctuator					
+
+
+Comment (1 lines):
+ for for for This is a multi
+/*Heyy
