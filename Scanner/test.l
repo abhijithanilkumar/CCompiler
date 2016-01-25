@@ -10,7 +10,7 @@ IS			(u|U|l|L)*
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
-int found=0,var_cnt=0,i,nestedComment=0,bracCount=0,lineCount=0;
+int found=0,var_cnt=0,i,nestedComment=0,bracCount=0,lineCount=0,flag=0;
 char *comment;
 void add_to_comment(char*);
 struct holder
@@ -42,9 +42,16 @@ ws [ \t]+
 {comment}           ;
 {comstr}            {  BEGIN(C_COMMENT);
 			           nestedComment++;
-					   if(nestedComment>1)
-						 printf("ERROR: Nested Comment\n");
+                       lineCount++;
+                       add_to_comment("\n");
 					}
+<C_COMMENT>{comstr} { nestedComment++;  
+                      if(nestedComment>1)
+                      {
+						printf("ERROR: Nested Comment\n");
+                        flag = 1;
+                      }
+                    }
 <C_COMMENT>{comend} {
                         if(nestedComment>0)
                                 nestedComment--;
@@ -138,8 +145,17 @@ int main()
  if(bracCount!=0)
     printf("ERROR: Bracket mismatch\n");
  fprintf(yyout,"\n");
- fprintf(yyout,"\n\nComment (%d lines):\n",lineCount);
- fputs(comment,yyout);
+ if(flag==1)
+ {
+   lineCount=0;
+   fprintf(yyout,"\n\nComment (%d lines):\n",lineCount);
+   fprintf(yyout,"ERROR: Nested Comment");
+ }
+ else
+ {
+   fprintf(yyout,"\n\nComment (%d lines):",lineCount);
+   fputs(comment,yyout);
+ }
  fclose(yyout);
 }
 int yywrap()

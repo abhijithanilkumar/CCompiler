@@ -1,6 +1,6 @@
 #include<stdio.h>
 /* for for for This is a multi
-/*Heyy*/
+I am not a nested comment
 line comment*/ 
 int main() {
    int amount, rate, time, si;
@@ -20,4 +20,5 @@ int main() {
    return(0);
 }
 }
+/* Heyy how are you? */
 "I am a
