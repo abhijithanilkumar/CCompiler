@@ -688,8 +688,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "test.l"
-#line 9 "test.l"
+#line 1 "scanner.l"
+#line 9 "scanner.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -896,7 +896,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 37 "test.l"
+#line 37 "scanner.l"
 
 #line 902 "lex.yy.c"
 
@@ -984,39 +984,39 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 38 "test.l"
+#line 38 "scanner.l"
 {insert(yytext,'d');}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 39 "test.l"
+#line 39 "scanner.l"
 {;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 40 "test.l"
+#line 40 "scanner.l"
 {printf("ERROR: printferror\n");}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 41 "test.l"
+#line 41 "scanner.l"
 {;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 42 "test.l"
+#line 42 "scanner.l"
 {printf("ERROR: scanferror\n");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 43 "test.l"
+#line 43 "scanner.l"
 ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 44 "test.l"
+#line 44 "scanner.l"
 {  BEGIN(C_COMMENT);
 			           nestedComment++;
                        lineCount++;
@@ -1025,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 49 "test.l"
+#line 49 "scanner.l"
 { nestedComment++;  
                       if(nestedComment>1)
                       {
@@ -1036,7 +1036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 56 "test.l"
+#line 56 "scanner.l"
 {
                         if(nestedComment>0)
                                 nestedComment--;
@@ -1049,97 +1049,97 @@ YY_RULE_SETUP
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 64 "test.l"
+#line 64 "scanner.l"
 {lineCount++; add_to_comment("\n");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 65 "test.l"
+#line 65 "scanner.l"
 {add_to_comment(yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "test.l"
+#line 66 "scanner.l"
 {if(nestedComment<=0)
                 insert(yytext,'k');
             }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 69 "test.l"
+#line 69 "scanner.l"
 {  if(nestedComment<=0) insert(yytext,'v'); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "test.l"
+#line 72 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 73 "test.l"
+#line 73 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 74 "test.l"
+#line 74 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 75 "test.l"
+#line 75 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 76 "test.l"
+#line 76 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 77 "test.l"
+#line 77 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 78 "test.l"
+#line 78 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 80 "test.l"
+#line 80 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'s');}
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 81 "test.l"
+#line 81 "scanner.l"
 {if(nestedComment<=0) printf("ERROR: String does not end\n");}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 83 "test.l"
+#line 83 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 85 "test.l"
+#line 85 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 87 "test.l"
+#line 87 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 88 "test.l"
+#line 88 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 89 "test.l"
+#line 89 "scanner.l"
 {if(nestedComment<=0) {
                 insert(yytext,'p');
                 bracCount++;
@@ -1148,12 +1148,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 94 "test.l"
+#line 94 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 95 "test.l"
+#line 95 "scanner.l"
 {if(nestedComment<=0) {
                 insert(yytext,'p');
                 bracCount--;
@@ -1162,128 +1162,128 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 100 "test.l"
+#line 100 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 101 "test.l"
+#line 101 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 102 "test.l"
+#line 102 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 103 "test.l"
+#line 103 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 104 "test.l"
+#line 104 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 105 "test.l"
+#line 105 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 106 "test.l"
+#line 106 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 107 "test.l"
+#line 107 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 108 "test.l"
+#line 108 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 109 "test.l"
+#line 109 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 110 "test.l"
+#line 110 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 111 "test.l"
+#line 111 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 112 "test.l"
+#line 112 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 113 "test.l"
+#line 113 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 114 "test.l"
+#line 114 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 115 "test.l"
+#line 115 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 116 "test.l"
+#line 116 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 117 "test.l"
+#line 117 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 118 "test.l"
+#line 118 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 119 "test.l"
+#line 119 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 120 "test.l"
+#line 120 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 121 "test.l"
+#line 121 "scanner.l"
 {if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 52:
 /* rule 52 can match eol */
 YY_RULE_SETUP
-#line 123 "test.l"
+#line 123 "scanner.l"
 {;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 124 "test.l"
+#line 124 "scanner.l"
 { /* ignore bad characters */ }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 126 "test.l"
+#line 126 "scanner.l"
 ECHO;
 	YY_BREAK
 #line 1290 "lex.yy.c"
@@ -2288,7 +2288,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 126 "test.l"
+#line 126 "scanner.l"
 
 
 
