@@ -697,14 +697,15 @@ char *yytext;
 int found=0,var_cnt=0,i,nestedComment=0,bracCount=0,lineCount=0,flag=0;
 char *comment;
 void add_to_comment(char*);
+void insert(char *yytext,char type);
 struct holder
 {
 	char name[10];
 	int val;
-	}st[20];
+	}st[100];
 
 
-#line 708 "lex.yy.c"
+#line 709 "lex.yy.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -895,9 +896,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 36 "test.l"
+#line 37 "test.l"
 
-#line 901 "lex.yy.c"
+#line 902 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -983,39 +984,39 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 37 "test.l"
-{fprintf(yyout,"\n%s\t\t\tPreprocessor Statement\t\t\t\t***",yytext);}
+#line 38 "test.l"
+{insert(yytext,'d');}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 38 "test.l"
+#line 39 "test.l"
 {;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 39 "test.l"
+#line 40 "test.l"
 {printf("ERROR: printferror\n");}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 40 "test.l"
+#line 41 "test.l"
 {;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 41 "test.l"
+#line 42 "test.l"
 {printf("ERROR: scanferror\n");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 42 "test.l"
+#line 43 "test.l"
 ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 43 "test.l"
+#line 44 "test.l"
 {  BEGIN(C_COMMENT);
 			           nestedComment++;
                        lineCount++;
@@ -1024,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 48 "test.l"
+#line 49 "test.l"
 { nestedComment++;  
                       if(nestedComment>1)
                       {
@@ -1035,7 +1036,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 55 "test.l"
+#line 56 "test.l"
 {
                         if(nestedComment>0)
                                 nestedComment--;
@@ -1048,253 +1049,244 @@ YY_RULE_SETUP
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 63 "test.l"
+#line 64 "test.l"
 {lineCount++; add_to_comment("\n");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 64 "test.l"
+#line 65 "test.l"
 {add_to_comment(yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 65 "test.l"
+#line 66 "test.l"
 {if(nestedComment<=0)
-                fprintf(yyout,"\n%s\t\t\t\t\tKeyword\t\t\t\t\t\t***",yytext);
+                insert(yytext,'k');
             }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 68 "test.l"
-{  if(nestedComment<=0){
-                            for(i=0;i<var_cnt;i++)
-     						    if(strcmp(st[i].name,yytext)==0)
-      						    break;
-
-    						    if(i==var_cnt)
-     							    strcpy(st[var_cnt++].name,yytext);
-    						    fprintf(yyout,"\n%s\t\t\t\t\tVariable\t\t\t\t\t%d",yytext,i);
-                        }
-    				}
+#line 69 "test.l"
+{  if(nestedComment<=0) insert(yytext,'v'); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 80 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 72 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 81 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 73 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 82 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 74 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 83 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 75 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 84 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 76 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 85 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 77 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 86 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+#line 78 "test.l"
+{if(nestedComment<=0) insert(yytext,'c');}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 88 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tString Literal\t\t\t\t\t***",yytext);}
+#line 80 "test.l"
+{if(nestedComment<=0) insert(yytext,'s');}
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 89 "test.l"
+#line 81 "test.l"
 {if(nestedComment<=0) printf("ERROR: String does not end\n");}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 91 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 83 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 93 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 85 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 95 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%sOperator\t\t\t\t\t",yytext);}
+#line 87 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 96 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 88 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 97 "test.l"
+#line 89 "test.l"
 {if(nestedComment<=0) {
-                fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);
+                insert(yytext,'p');
                 bracCount++;
                 }
             }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 102 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 94 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 103 "test.l"
+#line 95 "test.l"
 {if(nestedComment<=0) {
-                fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);
+                insert(yytext,'p');
                 bracCount--;
                 }
             }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 108 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 100 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 109 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 101 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 110 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 102 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 111 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 103 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 112 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 104 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 113 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 105 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 114 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 106 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 115 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 107 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 116 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+#line 108 "test.l"
+{if(nestedComment<=0) insert(yytext,'p');}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 117 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 109 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 118 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 110 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 119 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 111 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 120 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 112 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 121 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 113 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 122 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 114 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 123 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 115 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 124 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 116 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 125 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 117 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 126 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 118 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 127 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 119 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 128 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 120 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 129 "test.l"
-{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+#line 121 "test.l"
+{if(nestedComment<=0) insert(yytext,'o');}
 	YY_BREAK
 case 52:
 /* rule 52 can match eol */
 YY_RULE_SETUP
-#line 131 "test.l"
+#line 123 "test.l"
 {;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 132 "test.l"
+#line 124 "test.l"
 { /* ignore bad characters */ }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 134 "test.l"
+#line 126 "test.l"
 ECHO;
 	YY_BREAK
-#line 1298 "lex.yy.c"
+#line 1290 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -2296,7 +2288,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 134 "test.l"
+#line 126 "test.l"
 
 
 
@@ -2341,5 +2333,43 @@ void add_to_comment(char *yytext)
  comment = (char*)malloc((len1+len2+1)*sizeof(char));
  strcat(temp,yytext);
  strcpy(comment,temp);
+}
+
+void insert(char *yytext,char type)
+{
+    char token[20];
+    switch(type)
+    {
+        case 'c':
+            strcpy(token,"Constant");
+            break;
+        case 'v':
+            strcpy(token,"Variable");
+            break;
+        case 'p':
+            strcpy(token,"Punctuator");
+            break;
+        case 'o':
+            strcpy(token,"Operator");
+            break;
+        case 'k':
+            strcpy(token,"Keyword");
+            break;
+        case 's':
+            strcpy(token,"String Literal");
+            break;
+        case 'd':
+            strcpy(token,"Preprocessor Statement");
+            break;
+    }
+    if(nestedComment<=0)
+    {
+        for(i=0;i<var_cnt;i++)
+            if(strcmp(st[i].name,yytext)==0)
+                break;
+        if(i==var_cnt)
+            strcpy(st[var_cnt++].name,yytext);
+        fprintf(yyout,"\n%s\t\t\t\t\t%s\t\t\t\t\t%d",yytext,token,i);
+    }
 }
 

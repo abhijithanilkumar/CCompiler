@@ -13,11 +13,12 @@ IS			(u|U|l|L)*
 int found=0,var_cnt=0,i,nestedComment=0,bracCount=0,lineCount=0,flag=0;
 char *comment;
 void add_to_comment(char*);
+void insert(char *yytext,char type);
 struct holder
 {
 	char name[10];
 	int val;
-	}st[20];
+	}st[100];
 
 %}
 string L?\"(\\.|[^\\"])*\"
@@ -34,7 +35,7 @@ ws [ \t]+
 %x C_COMMENT
 
 %%
-^#([-a-zA-Z0-9.]|{relop}|{ws})* {fprintf(yyout,"\n%s\t\t\tPreprocessor Statement\t\t\t\t***",yytext);}
+^#([-a-zA-Z0-9.]|{relop}|{ws})* {insert(yytext,'d');}
 {printf}            {;}
 {prnterr}           {printf("ERROR: printferror\n");}
 {scanf}             {;}
@@ -63,70 +64,61 @@ ws [ \t]+
 <C_COMMENT>\n {lineCount++; add_to_comment("\n");}
 <C_COMMENT>. {add_to_comment(yytext);}
 {keyword}  {if(nestedComment<=0)
-                fprintf(yyout,"\n%s\t\t\t\t\tKeyword\t\t\t\t\t\t***",yytext);
+                insert(yytext,'k');
             }
-{L}({L}|{D})*		{  if(nestedComment<=0){
-                            for(i=0;i<var_cnt;i++)
-     						    if(strcmp(st[i].name,yytext)==0)
-      						    break;
-
-    						    if(i==var_cnt)
-     							    strcpy(st[var_cnt++].name,yytext);
-    						    fprintf(yyout,"\n%s\t\t\t\t\tVariable\t\t\t\t\t%d",yytext,i);
-                        }
-    				}
+{L}({L}|{D})*		{  if(nestedComment<=0) insert(yytext,'v'); }
 
 
-0[xX]{H}+{IS}?		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-0{D}+{IS}?		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-{D}+{IS}?		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-L?'(\\.|[^\\'])+'	{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-{D}+{E}{FS}?		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-{D}*"."{D}+({E})?{FS}?	{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
-{D}+"."{D}*({E})?{FS}?	{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tConstant\t\t\t\t\t***",yytext);}
+0[xX]{H}+{IS}?		{if(nestedComment<=0) insert(yytext,'c');}
+0{D}+{IS}?		{if(nestedComment<=0) insert(yytext,'c');}
+{D}+{IS}?		{if(nestedComment<=0) insert(yytext,'c');}
+L?'(\\.|[^\\'])+'	{if(nestedComment<=0) insert(yytext,'c');}
+{D}+{E}{FS}?		{if(nestedComment<=0) insert(yytext,'c');}
+{D}*"."{D}+({E})?{FS}?	{if(nestedComment<=0) insert(yytext,'c');}
+{D}+"."{D}*({E})?{FS}?	{if(nestedComment<=0) insert(yytext,'c');}
 
-L?\"(\\.|[^\\"])*\"	{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tString Literal\t\t\t\t\t***",yytext);}
+L?\"(\\.|[^\\"])*\"	{if(nestedComment<=0) insert(yytext,'s');}
 L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 
-"..."|">>="|"<<="|"+="|"-="|"*="|"/="		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+"..."|">>="|"<<="|"+="|"-="|"*="|"/="		{if(nestedComment<=0) insert(yytext,'o');}
 
-"%="|"&="|"^="|"|="|">>"|"<<"|"++"|"--"|"->"|"&&"|"||"|"<="			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+"%="|"&="|"^="|"|="|">>"|"<<"|"++"|"--"|"->"|"&&"|"||"|"<="			{if(nestedComment<=0) insert(yytext,'o');}
 
-">="|"=="|"!="		{if(nestedComment<=0) fprintf(yyout,"\n%sOperator\t\t\t\t\t",yytext);}
-";"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+">="|"=="|"!="		{if(nestedComment<=0) insert(yytext,'o');}
+";"			{if(nestedComment<=0) insert(yytext,'p');}
 "{" 		{if(nestedComment<=0) {
-                fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);
+                insert(yytext,'p');
                 bracCount++;
                 }
             }
-"<%"		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
+"<%"		{if(nestedComment<=0) insert(yytext,'p');}
 "}" 	   	{if(nestedComment<=0) {
-                fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);
+                insert(yytext,'p');
                 bracCount--;
                 }
             }
-"%>"		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-","			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-":"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-"="			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-"("			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-")"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-("["|"<:")		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-("]"|":>")		{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-"."			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tPunctuator\t\t\t\t\t",yytext);}
-"&"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"!"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"~"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"-"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"+"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"*"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"/"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"%"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"<"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-">"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"^"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"|"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
-"?"			{if(nestedComment<=0) fprintf(yyout,"\n%s\t\t\t\t\tOperator\t\t\t\t\t",yytext);}
+"%>"		{if(nestedComment<=0) insert(yytext,'p');}
+","			{if(nestedComment<=0) insert(yytext,'p');}
+":"			{if(nestedComment<=0) insert(yytext,'p');}
+"="			{if(nestedComment<=0) insert(yytext,'p');}
+"("			{if(nestedComment<=0) insert(yytext,'p');}
+")"			{if(nestedComment<=0) insert(yytext,'p');}
+("["|"<:")		{if(nestedComment<=0) insert(yytext,'p');}
+("]"|":>")		{if(nestedComment<=0) insert(yytext,'p');}
+"."			{if(nestedComment<=0) insert(yytext,'p');}
+"&"			{if(nestedComment<=0) insert(yytext,'o');}
+"!"			{if(nestedComment<=0) insert(yytext,'o');}
+"~"			{if(nestedComment<=0) insert(yytext,'o');}
+"-"			{if(nestedComment<=0) insert(yytext,'o');}
+"+"			{if(nestedComment<=0) insert(yytext,'o');}
+"*"			{if(nestedComment<=0) insert(yytext,'o');}
+"/"			{if(nestedComment<=0) insert(yytext,'o');}
+"%"			{if(nestedComment<=0) insert(yytext,'o');}
+"<"			{if(nestedComment<=0) insert(yytext,'o');}
+">"			{if(nestedComment<=0) insert(yytext,'o');}
+"^"			{if(nestedComment<=0) insert(yytext,'o');}
+"|"			{if(nestedComment<=0) insert(yytext,'o');}
+"?"			{if(nestedComment<=0) insert(yytext,'o');}
 
 [ \t\v\n\f]		{;}
 .			{ /* ignore bad characters */ }
@@ -174,4 +166,42 @@ void add_to_comment(char *yytext)
  comment = (char*)malloc((len1+len2+1)*sizeof(char));
  strcat(temp,yytext);
  strcpy(comment,temp);
+}
+
+void insert(char *yytext,char type)
+{
+    char token[20];
+    switch(type)
+    {
+        case 'c':
+            strcpy(token,"Constant");
+            break;
+        case 'v':
+            strcpy(token,"Variable");
+            break;
+        case 'p':
+            strcpy(token,"Punctuator");
+            break;
+        case 'o':
+            strcpy(token,"Operator");
+            break;
+        case 'k':
+            strcpy(token,"Keyword");
+            break;
+        case 's':
+            strcpy(token,"String Literal");
+            break;
+        case 'd':
+            strcpy(token,"Preprocessor Statement");
+            break;
+    }
+    if(nestedComment<=0)
+    {
+        for(i=0;i<var_cnt;i++)
+            if(strcmp(st[i].name,yytext)==0)
+                break;
+        if(i==var_cnt)
+            strcpy(st[var_cnt++].name,yytext);
+        fprintf(yyout,"\n%s\t\t\t\t\t%s\t\t\t\t\t%d",yytext,token,i);
+    }
 }
