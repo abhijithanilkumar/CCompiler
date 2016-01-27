@@ -16,7 +16,7 @@ void add_to_comment(char*);
 void insert(char *yytext,char type);
 struct holder
 {
-	char name[10];
+	char *name;
 	int val;
 	}st[100];
 
@@ -170,6 +170,7 @@ void add_to_comment(char *yytext)
 
 void insert(char *yytext,char type)
 {
+    int len1 = strlen(yytext);
     char token[20];
     switch(type)
     {
@@ -201,7 +202,10 @@ void insert(char *yytext,char type)
             if(strcmp(st[i].name,yytext)==0)
                 break;
         if(i==var_cnt)
+        {
+            st[var_cnt].name = (char*)malloc((len1+1)*sizeof(char));
             strcpy(st[var_cnt++].name,yytext);
+        }
         fprintf(yyout,"\n%s\t\t\t\t\t%s\t\t\t\t\t%d",yytext,token,i);
     }
 }
