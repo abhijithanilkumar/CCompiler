@@ -47,8 +47,5 @@ return					Keyword					16
 }					Punctuator					18
 
 
-Comment (4 lines):
- for for for This is a multi
-I am not a nested comment
-line comment
- Heyy how are you? 
+Comment (0 lines):
+ERROR: Nested Comment

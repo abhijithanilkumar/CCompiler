@@ -1,6 +1,6 @@
 #include<stdio.h>
 /* for for for This is a multi
-I am not a nested comment
+/*I am not a nested comment*/
 line comment*/ 
 int main() {
    int amount, rate, time, si;

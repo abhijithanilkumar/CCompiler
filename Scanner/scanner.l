@@ -1,4 +1,7 @@
-D			[0-9]
+/* Scanner Program */                                                                                                                           
+
+ /* DEFINITIONS */
+D			[0-9]                                                                                                                                                     
 L			[a-zA-Z_]
 H			[a-fA-F0-9]
 E			[Ee][+-]?{D}+
@@ -18,7 +21,8 @@ struct holder
 {
 	char *name;
 	int val;
-	}st[100];
+	struct holder *next;
+}*st,*head;
 
 %}
 string L?\"(\\.|[^\\"])*\"
@@ -35,18 +39,23 @@ ws [ \t]+
 %x C_COMMENT
 
 %%
+
+ /* RULES */
 ^#([-a-zA-Z0-9.]|{relop}|{ws})* {insert(yytext,'d');}
 {printf}            {;}
 {prnterr}           {printf("ERROR: printferror\n");}
 {scanf}             {;}
-{scanerr}           {printf("ERROR: scanferror\n");}
+{scanerr}           {printf("ERROR: scanferror\n");}                                                                                                 
 {comment}           ;
+
+ /*RegEx for Comments*/
+
 {comstr}            {  BEGIN(C_COMMENT);
 			           nestedComment++;
                        lineCount++;
                        add_to_comment("\n");
 					}
-<C_COMMENT>{comstr} { nestedComment++;  
+<C_COMMENT>{comstr} { nestedComment++;
                       if(nestedComment>1)
                       {
 						printf("ERROR: Nested Comment\n");
@@ -59,15 +68,22 @@ ws [ \t]+
                         else
                             printf("ERROR: */ found before /*\n");
                         if(nestedComment==0)
-                            BEGIN(INITIAL);     
+                            BEGIN(INITIAL);
                     }
 <C_COMMENT>\n {lineCount++; add_to_comment("\n");}
 <C_COMMENT>. {add_to_comment(yytext);}
+
+ /*RegEx for Keywords*/
+
 {keyword}  {if(nestedComment<=0)
                 insert(yytext,'k');
             }
+
+ /*RegEx for Variables*/
+
 {L}({L}|{D})*		{  if(nestedComment<=0) insert(yytext,'v'); }
 
+ /*RegEx for Constants*/
 
 0[xX]{H}+{IS}?		{if(nestedComment<=0) insert(yytext,'c');}
 0{D}+{IS}?		{if(nestedComment<=0) insert(yytext,'c');}
@@ -77,14 +93,21 @@ L?'(\\.|[^\\'])+'	{if(nestedComment<=0) insert(yytext,'c');}
 {D}*"."{D}+({E})?{FS}?	{if(nestedComment<=0) insert(yytext,'c');}
 {D}+"."{D}*({E})?{FS}?	{if(nestedComment<=0) insert(yytext,'c');}
 
+ /*RegEx for String Literals*/
+
 L?\"(\\.|[^\\"])*\"	{if(nestedComment<=0) insert(yytext,'s');}
 L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
+
+ /*RegEx for Operators*/
 
 "..."|">>="|"<<="|"+="|"-="|"*="|"/="		{if(nestedComment<=0) insert(yytext,'o');}
 
 "%="|"&="|"^="|"|="|">>"|"<<"|"++"|"--"|"->"|"&&"|"||"|"<="			{if(nestedComment<=0) insert(yytext,'o');}
 
 ">="|"=="|"!="		{if(nestedComment<=0) insert(yytext,'o');}
+
+ /*RegEx for Punctuators*/
+
 ";"			{if(nestedComment<=0) insert(yytext,'p');}
 "{" 		{if(nestedComment<=0) {
                 insert(yytext,'p');
@@ -106,6 +129,9 @@ L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 ("["|"<:")		{if(nestedComment<=0) insert(yytext,'p');}
 ("]"|":>")		{if(nestedComment<=0) insert(yytext,'p');}
 "."			{if(nestedComment<=0) insert(yytext,'p');}
+
+ /*RegEx for Operators*/
+
 "&"			{if(nestedComment<=0) insert(yytext,'o');}
 "!"			{if(nestedComment<=0) insert(yytext,'o');}
 "~"			{if(nestedComment<=0) insert(yytext,'o');}
@@ -114,7 +140,7 @@ L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 "*"			{if(nestedComment<=0) insert(yytext,'o');}
 "/"			{if(nestedComment<=0) insert(yytext,'o');}
 "%"			{if(nestedComment<=0) insert(yytext,'o');}
-"<"			{if(nestedComment<=0) insert(yytext,'o');}
+"<"			{if(nestedComment<=0) insert(yytext,'o');}                                                                                                    
 ">"			{if(nestedComment<=0) insert(yytext,'o');}
 "^"			{if(nestedComment<=0) insert(yytext,'o');}
 "|"			{if(nestedComment<=0) insert(yytext,'o');}
@@ -124,6 +150,8 @@ L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 .			{ /* ignore bad characters */ }
 
 %%
+
+/* USER CODE */
 
 int main()
 {
@@ -157,8 +185,10 @@ int yywrap()
 
 void add_to_comment(char *yytext)
 {
+ /* Function to display comments separately! */
+
  int len1,len2;
- char *temp;
+ char *temp;                                                                                                                       
  len1 = strlen(comment);
  len2 = strlen(yytext);
  temp = (char*)malloc((len1+1)*sizeof(char));
@@ -170,8 +200,12 @@ void add_to_comment(char *yytext)
 
 void insert(char *yytext,char type)
 {
+  /* Function to insert symbols to the Symbol Table */
+
     int len1 = strlen(yytext);
     char token[20];
+	struct holder *symbol,*temp,*nextptr;
+	nextptr = head;
     switch(type)
     {
         case 'c':
@@ -198,14 +232,25 @@ void insert(char *yytext,char type)
     }
     if(nestedComment<=0)
     {
-        for(i=0;i<var_cnt;i++)
-            if(strcmp(st[i].name,yytext)==0)
-                break;
+        for(i=0;i<var_cnt;i++,nextptr=nextptr->next)
+		{
+			symbol = nextptr;
+            if(strcmp(symbol->name,yytext)==0)
+                break;                                                                                                
+		}
         if(i==var_cnt)
         {
-            st[var_cnt].name = (char*)malloc((len1+1)*sizeof(char));
-            strcpy(st[var_cnt++].name,yytext);
+			temp = (struct holder*)malloc(sizeof(struct holder));
+            temp->name = (char*)malloc((len1+1)*sizeof(char));
+			strcpy(temp->name,yytext);
+			temp->val = i;
+			temp->next = NULL;
+			if(var_cnt==0)
+				head = temp;
+			else
+				symbol->next = temp;
+			var_cnt++;
         }
         fprintf(yyout,"\n%s\t\t\t\t\t%s\t\t\t\t\t%d",yytext,token,i);
     }
-}
+}                                                                                                           
