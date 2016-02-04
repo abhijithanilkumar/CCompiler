@@ -19,7 +19,7 @@ void add_to_comment(char*);
 void insert(char *yytext,char type);
 struct holder
 {
-	char *name;
+	char *name,token[20];
 	int val;
 	struct holder *next;
 }*st,*head;
@@ -82,6 +82,7 @@ ws [ \t]+
  /*RegEx for Variables*/
 
 {L}({L}|{D})*		{  if(nestedComment<=0) insert(yytext,'v'); }
+{D}+{L}+      { printf("ERROR: Bad Token\n");}
 
  /*RegEx for Constants*/
 
@@ -147,7 +148,7 @@ L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 "?"			{if(nestedComment<=0) insert(yytext,'o');}
 
 [ \t\v\n\f]		{;}
-.			{ /* ignore bad characters */ }
+.			{ printf("ERROR : Bad Character"); }
 
 %%
 
@@ -156,9 +157,9 @@ L?\"(\\.|[^\\"])*	{if(nestedComment<=0) printf("ERROR: String does not end\n");}
 int main()
 {
  comment = (char*)malloc(100*sizeof(char));
- yyin=fopen("input.txt","r");
+ yyin=fopen("input.c","r");
  yyout=fopen("out.txt","w");
- fprintf(yyout,"\n Symbol Table Format is:\n Lexeme\t\t\t\t\tToken\t\t\t\t\tAttribute Value\n");
+ fprintf(yyout,"\n Symbol Table Format is:\n \tLexeme\t\t\t\t\t\t\t\tToken\t\t\t\t\tAttribute Value\n");
  yylex();
  if(nestedComment!=0)
     printf("ERROR: Comment does not end\n");
@@ -243,6 +244,7 @@ void insert(char *yytext,char type)
 			temp = (struct holder*)malloc(sizeof(struct holder));
             temp->name = (char*)malloc((len1+1)*sizeof(char));
 			strcpy(temp->name,yytext);
+            strcpy(temp->token,token);
 			temp->val = i;
 			temp->next = NULL;
 			if(var_cnt==0)
@@ -251,6 +253,6 @@ void insert(char *yytext,char type)
 				symbol->next = temp;
 			var_cnt++;
         }
-        fprintf(yyout,"\n%s\t\t\t\t\t%s\t\t\t\t\t%d",yytext,token,i);
+        fprintf(yyout,"\n%20s%30.30s%20d",yytext,token,i);
     }
 }                                                                                                           

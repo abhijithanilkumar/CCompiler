@@ -1,50 +1,50 @@
 
  Symbol Table Format is:
- Lexeme					Token					Attribute Value
+ 	Lexeme								Token					Attribute Value
 
-#include<stdio.h>					Preprocessor Statement					0
-int					Keyword					1
-main					Variable					2
-(					Punctuator					3
-)					Punctuator					4
-{					Punctuator					5
-int					Keyword					1
-amount					Variable					6
-,					Punctuator					7
-rate					Variable					8
-,					Punctuator					7
-time					Variable					9
-,					Punctuator					7
-si					Variable					10
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-si					Variable					10
-=					Punctuator					12
-(					Punctuator					3
-amount					Variable					6
-*					Operator					13
-rate					Variable					8
-*					Operator					13
-time					Variable					9
-)					Punctuator					4
-/					Operator					14
-100					Constant					15
-;					Punctuator					11
-;					Punctuator					11
-;					Punctuator					11
-return					Keyword					16
-(					Punctuator					3
-0					Constant					17
-)					Punctuator					4
-;					Punctuator					11
-}					Punctuator					18
-}					Punctuator					18
+   #include<stdio.h>        Preprocessor Statement                   0
+                 int                       Keyword                   1
+                main                      Variable                   2
+                   (                    Punctuator                   3
+                   )                    Punctuator                   4
+                   {                    Punctuator                   5
+                 int                       Keyword                   1
+              amount                      Variable                   6
+                   ,                    Punctuator                   7
+                rate                      Variable                   8
+                   ,                    Punctuator                   7
+                time                      Variable                   9
+                   ,                    Punctuator                   7
+                  si                      Variable                  10
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                  si                      Variable                  10
+                   =                    Punctuator                  12
+                   (                    Punctuator                   3
+              amount                      Variable                   6
+                   *                      Operator                  13
+                rate                      Variable                   8
+                   *                      Operator                  13
+                time                      Variable                   9
+                   )                    Punctuator                   4
+                   /                      Operator                  14
+                 100                      Constant                  15
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+                   ;                    Punctuator                  11
+              return                       Keyword                  16
+                   (                    Punctuator                   3
+                   0                      Constant                  17
+                   )                    Punctuator                   4
+                   ;                    Punctuator                  11
+                   }                    Punctuator                  18
+                   }                    Punctuator                  18
 
 
 Comment (0 lines):
