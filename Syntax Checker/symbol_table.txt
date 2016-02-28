@@ -3,23 +3,31 @@
 =================== 
  								Name								Token Class																									Line Number
 
-              return                       Keyword                                                          20
+                   b                    Identifier                                              24 26 27 27 28
+                   *                      Operator                            24 24 26 26 26 27 27 27 28 28 28
+                 for                       Keyword                                                       20 21
                   if                       Keyword                                                          20
-                   /                      Operator                                                          16
-                   *                      Operator                                                       16 16
-                   =                      Operator                                                          16
-                   &                      Operator                                                      7 9 15
-               scanf                    Identifier                                                      7 9 15
-              printf                    Identifier                                                6 8 14 17 19
-                   ;                    Punctuator                                 5 6 7 8 9 14 15 16 17 19 20
-                  ee                    Identifier                                                           5
-                  si                    Identifier                                                     5 16 17
-                time                    Identifier                                                     5 15 16
-                   ,                    Punctuator                                           5 5 5 5 7 9 15 17
-                rate                    Identifier                                                      5 9 16
-              amount                    Identifier                                                      5 7 16
-                main                    Identifier                                                           4
-                 int                       Keyword                                                         4 5
+                swap                    Identifier                                                       18 24
+                   +                      Operator                                                    16 18 26
+                   -                      Operator                                                    14 27 28
+                   =                      Operator                                              12 14 26 27 28
+               while                       Keyword                                                           9
+                   }                    Punctuator                                            9 19 20 21 22 29
+                   &                      Operator                                                     8 18 18
+               scanf                    Identifier                                                           8
+                   ;                    Punctuator                                 4 8 12 12 14 14 18 26 27 28
+                   j                    Identifier                                   4 14 14 14 14 16 16 18 18
+                   ,                    Punctuator                                                 4 4 8 18 24
+                   i                    Identifier                                        4 6 8 12 12 12 12 14
+                   ]                    Punctuator                                             4 8 16 16 18 18
+                   [                    Punctuator                                             4 8 16 16 18 18
+                   a                    Identifier                           4 8 16 16 18 18 24 26 26 27 28 28
+                 int                       Keyword                                                     4 24 24
+                   {                    Punctuator                                             3 7 13 15 17 25
+                   )                    Punctuator                                        2 8 9 18 20 20 21 24
+                   (                    Punctuator                                        2 8 9 18 20 20 21 24
+                main                    Identifier                                                           2
+                void                       Keyword                                                        2 24
 
 
 
@@ -27,12 +35,8 @@
 =================== 
  																			Value																												Line Number
 
-                                                 0                                                          20
-                                           "Hello"                                                          19
-                                                 1                                                          18
-                          "\nSimple Interest : %d"                                                          17
-                                               100                                                          16
-                     "\nEnter Period of Time   : "                                                          14
-                     "\nEnter Rate of Interest : "                                                           8
-                                              "%d"                                                      7 9 15
-                     "\nEnter Principal Amount : "                                                           6
+                                                 1                                                       16 18
+                                                 9                                                          14
+                                                 0                                                       12 14
+                                              "%d"                                                           8
+                                                10                                                      4 6 12

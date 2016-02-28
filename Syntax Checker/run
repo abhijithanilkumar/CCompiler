@@ -1,6 +1,7 @@
 #!/bin/sh
-yacc -d parser.y
+rm -rf symbol_table.txt
 lex scanner.l
+yacc -d parser.y
 gcc lex.yy.c y.tab.c -w -g
 ./a.out $1
 rm -rf lex.yy.c y.tab.c y.tab.h a.out

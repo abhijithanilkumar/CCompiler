@@ -8,16 +8,23 @@ IS			(u|U|l|L)*
 %{
 #include <stdio.h>
 #include "y.tab.h"
-int cnt=0;
-int line=0;
+int cnt=1;
+int line=1;
 char *tempid;
 void insert(char*);
 %}
 comment (\/\/.*)
+comstr (\/\*)
+comend (\*\/)
+%x C_COMMENT
 %%
 
-"/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*/"		{/* ignore comments */}
+
 {comment}      {/* ignore comments */ line++;}
+{comstr}            { BEGIN(C_COMMENT); }
+<C_COMMENT>{comend} { BEGIN(INITIAL); line++; }
+<C_COMMENT>\n {line++;}
+<C_COMMENT>. {/* ignore comments */}
 
 "auto"			{ cnt+=yyleng;ECHO;  return(AUTO); }
 "break"			{ cnt+=yyleng;ECHO; printf("%s\n",yytext); return(BREAK); }
@@ -88,8 +95,8 @@ L?\"(\\.|[^\\"])*\"	{ cnt+=yyleng;ECHO; insert(yytext); return(STRING_LITERAL); 
 "=="			{ cnt+=yyleng;ECHO; return(EQ_OP); }
 "!="			{ cnt+=yyleng;ECHO; return(NE_OP); }
 ";"			{ cnt+=yyleng;ECHO; return(';'); }
-("{"|"<%")		{ cnt+=yyleng;ECHO; return('{'); }
-("}"|"%>")		{ cnt+=yyleng;ECHO; return('}'); }
+("{"|"<%")		{ cnt+=yyleng;ECHO; putsym("{",'p',line); return('{'); }
+("}"|"%>")		{ cnt+=yyleng;ECHO; putsym("}",'p',line); return('}'); }
 ","			{ cnt+=yyleng;ECHO; return(','); }
 ":"			{ cnt+=yyleng;ECHO; return(':'); }
 "="			{ cnt+=yyleng;ECHO; return('='); }

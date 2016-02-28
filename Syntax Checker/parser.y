@@ -34,14 +34,14 @@ primary_expression
 	: IDENTIFIER  { putsym(tempid, 'v', line); }
 	| CONSTANT    { putsym(tempid, 'c', line);}
 	| STRING_LITERAL  { putsym(tempid, 'c', line);}
-	| '(' expression ')'
+	| '(' expression ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 postfix_expression
 	: primary_expression
-	| postfix_expression '[' expression ']'
-	| postfix_expression '(' ')'
-	| postfix_expression '(' argument_expression_list ')'
+	| postfix_expression '[' expression ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| postfix_expression '(' ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| postfix_expression '(' argument_expression_list ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
 	| postfix_expression '.' IDENTIFIER { putsym(tempid, 'v', line);}
 	| postfix_expression PTR_OP IDENTIFIER { putsym(tempid, 'v', line);}
 	| postfix_expression INC_OP  { putsym(tempid, 'o', line);}
@@ -59,7 +59,7 @@ unary_expression
 	| DEC_OP unary_expression { putsym("--",'o', line); }
 	| unary_operator cast_expression
 	| SIZEOF unary_expression { putsym("sizeof",'o', line); }
-	| SIZEOF '(' type_name ')' { putsym("sizeof",'o', line); }
+	| SIZEOF '(' type_name ')' { putsym("sizeof",'o', line); } { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 unary_operator
@@ -73,7 +73,7 @@ unary_operator
 
 cast_expression
 	: unary_expression
-	| '(' type_name ')' cast_expression
+	| '(' type_name ')' cast_expression { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 multiplicative_expression
@@ -280,12 +280,12 @@ declarator
 
 direct_declarator
 	: IDENTIFIER { putsym(tempid, 'v', line); }
-	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' identifier_list ')'
-	| direct_declarator '(' ')'
+	| '(' declarator ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| direct_declarator '[' constant_expression ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| direct_declarator '[' ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| direct_declarator '(' parameter_type_list ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| direct_declarator '(' identifier_list ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| direct_declarator '(' ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 pointer
@@ -334,15 +334,15 @@ abstract_declarator
 	;
 
 direct_abstract_declarator
-	: '(' abstract_declarator ')'
-	| '[' ']'
-	| '[' constant_expression ']'
-	| direct_abstract_declarator '[' ']'
-	| direct_abstract_declarator '[' constant_expression ']'
-	| '(' ')'
-	| '(' parameter_type_list ')'
-	| direct_abstract_declarator '(' ')'
-	| direct_abstract_declarator '(' parameter_type_list ')'
+	: '(' abstract_declarator ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| '[' ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| '[' constant_expression ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| direct_abstract_declarator '[' ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| direct_abstract_declarator '[' constant_expression ']' { putsym("[", 'p', line); putsym("]", 'p', line); }
+	| '(' ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| '(' parameter_type_list ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| direct_abstract_declarator '(' ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
+	| direct_abstract_declarator '(' parameter_type_list ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 initializer
@@ -394,16 +394,16 @@ expression_statement
 	;
 
 selection_statement
-	: IF '(' expression ')' statement    %prec LOWER_THAN_ELSE { putsym("if", 'k', line); }
-  | IF '(' expression ')' statement ELSE statement { putsym("if", 'k', line);  putsym("else", 'k', line);}
-	| SWITCH '(' expression ')' statement
+	: IF '(' expression ')' statement    %prec LOWER_THAN_ELSE { putsym("if", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line);}
+  | IF '(' expression ')' statement ELSE statement { putsym("if", 'k', line);  putsym("else", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); }
+	| SWITCH '(' expression ')' statement { putsym("switch", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement  { putsym("while", 'k', line);}
-	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement  { putsym("for", 'k', line);}
-	| FOR '(' expression_statement expression_statement expression ')' statement { putsym("for", 'k', line); }
+	: WHILE '(' expression ')' statement  { putsym("while", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); }
+	| DO statement WHILE '(' expression ')' ';' { putsym("do", 'k', line); putsym("while", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); putsym(";", 'p', line); }
+	| FOR '(' expression_statement expression_statement ')' statement  { putsym("for", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); }
+	| FOR '(' expression_statement expression_statement expression ')' statement { putsym("for", 'k', line); putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 
 jump_statement
@@ -462,7 +462,10 @@ int argc;
     fprintf(sym_tab,"\n    Symbol Table \n=================== \n \t\t\t\t\t\t\t\tName\t\t\t\t\t\t\t\tToken Class\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLine Number\n");
   	symrec *ptr;
   	for(ptr=sym_table;ptr!=(symrec *)0;ptr=(symrec *)ptr->next)
+		{
   		fprintf(sym_tab,"\n%20s%30.30s%60s",ptr->name,ptr->type,ptr->line);
+			printf("\n%20s%30.30s%60s",ptr->name,ptr->type,ptr->line);
+		}
     fprintf(sym_tab,"\n\n\n\n    Constant Table \n=================== \n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tValue\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLine Number\n");
     for(ptr=const_table;ptr!=(symrec *)0;ptr=(symrec *)ptr->next)
   		fprintf(sym_tab,"\n%50s%60s",ptr->name,ptr->line);
