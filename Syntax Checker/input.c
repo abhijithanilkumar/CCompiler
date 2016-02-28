@@ -1,23 +1,20 @@
 #include<stdio.h>
 /* This is a multi
-/*This is a comment */
-line comment*/ 
+line comment*/
+//Heyy
 int main() {
-   int amount, rate, time, si;
-   //This is a single line comment
+   int amount,rate, time, si, ee;
    printf("\nEnter Principal Amount : ");
    scanf("%d", &amount);
- 
    printf("\nEnter Rate of Interest : ");
    scanf("%d", &rate);
- 
+   //hhhh
+   //htfyht
    printf("\nEnter Period of Time   : ");
    scanf("%d", &time);
-   scanf("",); 
    si = (amount * rate * time) / 100;
    printf("\nSimple Interest : %d", si);
-   printf("",); 
+   if(1)
+    printf("Hello");
    return(0);
 }
-}
-"I am a
