@@ -1,0 +1,38 @@
+
+    Symbol Table 
+=================== 
+ 								Name								Token Class																									Line Number
+
+              return                       Keyword                                                          20
+                  if                       Keyword                                                          20
+                   /                      Operator                                                          16
+                   *                      Operator                                                       16 16
+                   =                      Operator                                                          16
+                   &                      Operator                                                      7 9 15
+               scanf                    Identifier                                                      7 9 15
+              printf                    Identifier                                                6 8 14 17 19
+                   ;                    Punctuator                                 5 6 7 8 9 14 15 16 17 19 20
+                  ee                    Identifier                                                           5
+                  si                    Identifier                                                     5 16 17
+                time                    Identifier                                                     5 15 16
+                   ,                    Punctuator                                           5 5 5 5 7 9 15 17
+                rate                    Identifier                                                      5 9 16
+              amount                    Identifier                                                      5 7 16
+                main                    Identifier                                                           4
+                 int                       Keyword                                                         4 5
+
+
+
+    Constant Table 
+=================== 
+ 																			Value																												Line Number
+
+                                                 0                                                          20
+                                           "Hello"                                                          19
+                                                 1                                                          18
+                          "\nSimple Interest : %d"                                                          17
+                                               100                                                          16
+                     "\nEnter Period of Time   : "                                                          14
+                     "\nEnter Rate of Interest : "                                                           8
+                                              "%d"                                                      7 9 15
+                     "\nEnter Principal Amount : "                                                           6

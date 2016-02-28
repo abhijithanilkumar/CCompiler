@@ -1,0 +1,6 @@
+#!/bin/sh
+yacc -d parser.y
+lex scanner.l
+gcc lex.yy.c y.tab.c -w -g
+./a.out $1
+rm -rf lex.yy.c y.tab.c y.tab.h a.out

@@ -16,6 +16,7 @@
                 time                      Variable                   9
                    ,                    Punctuator                   7
                   si                      Variable                  10
+                   ,                    Punctuator                   7
                    ;                    Punctuator                  11
                    ;                    Punctuator                  11
                    ;                    Punctuator                  11
@@ -47,5 +48,6 @@
                    }                    Punctuator                  18
 
 
-Comment (0 lines):
-ERROR: Nested Comment
+Comment (2 lines):
+ This is a multi
+line comment
