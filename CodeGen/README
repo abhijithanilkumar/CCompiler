@@ -1,0 +1,16 @@
+Compiler for a subset of C written with Flex and Bison in the context of a compiler construction course at DHBW / Germany. After the compilation, the program takes C-code on the stdin and produces three-address-code in the quadcode.out file. See input.c for an example of the C-subset the compiler can cope with.
+
+As the source program is processed, it is converted to an internal form. The
+internal representation in the example is that of an implicit parse tree. Other
+internal forms may be used which resemble assembly code. The internal form is
+translated by the code generator into object code. Typically, the object code is
+a program for a virtual machine. The virtual machine chosen for Simple consists
+of three segments. A data segment, a code segment and an expression stack.
+The data segment contains the values associated with the variables. Each
+variable is assigned to a location which holds the associated value. Thus, part
+of the activity of code generation is to associate an address with each variable.
+The code segment consists of a sequence of operations. Program constants
+are incorporated in the code segment since their values do not change. The
+expression stack is a stack which is used to hold intermediate values in the
+evaluation of expressions. The presence of the expression stack indicates that
+the virtual machine for Simple is a “stack machine”.
