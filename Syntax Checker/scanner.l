@@ -5,7 +5,9 @@ E			[Ee][+-]?{D}+
 FS			(f|F|l|L)
 IS			(u|U|l|L)*
 
+
 %{
+
 #include <stdio.h>
 #include "y.tab.h"
 int cnt=1;
@@ -17,6 +19,7 @@ comment (\/\/.*)
 comstr (\/\*)
 comend (\*\/)
 %x C_COMMENT
+
 %%
 
 
@@ -26,7 +29,7 @@ comend (\*\/)
 <C_COMMENT>\n {line++;}
 <C_COMMENT>. {/* ignore comments */}
 
-"auto"			{ cnt+=yyleng;ECHO;  return(AUTO); }
+"auto"			{ cnt+=yyleng;ECHO; return(AUTO); }
 "break"			{ cnt+=yyleng;ECHO; printf("%s\n",yytext); return(BREAK); }
 "case"			{ cnt+=yyleng;ECHO; printf("%s\n",yytext); return(CASE); }
 "char"			{ cnt+=yyleng;ECHO; printf("%s\n",yytext);return(CHAR); }

@@ -88,3 +88,52 @@ void *getsym(char *sym_name)
 	return ptr;
 	return 0;
 }
+
+/*
+void print()
+{
+
+	#include <stdio.h>
+extern char yytext[];
+extern int column;
+yyerror(s)
+char *s;
+{
+	errorFlag=1;
+	fflush(stdout);
+	printf("\nSyntax error at line: %d and pos: %d\n", line,cnt);
+}
+main(argc,argv)
+char **argv;
+int argc;
+{
+	if(argc<=1)
+	{
+		printf("Arguments missing ! correct format : ./a.out filename \n");
+		return 0;
+	}
+	yyin=fopen(argv[1],"r");
+	yyout=fopen("out.c","w");
+	yyparse();
+
+	if(!errorFlag)
+  {
+		printf("Compilation Successful!\n");
+  	FILE *sym_tab=fopen("symbol_table.txt","w");
+    fprintf(sym_tab,"\n    Symbol Table \n=================== \n \t\t\t\t\t\t\t\tName\t\t\t\t\t\t\t\tToken Class\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLine Number\n");
+  	symrec *ptr;
+  	for(ptr=sym_table;ptr!=(symrec *)0;ptr=(symrec *)ptr->next)
+		{
+  		fprintf(sym_tab,"\n%20s%30.30s%60s",ptr->name,ptr->type,ptr->line);
+			printf("\n%20s%30.30s%60s",ptr->name,ptr->type,ptr->line);
+		}
+    fprintf(sym_tab,"\n\n\n\n    Constant Table \n=================== \n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tValue\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLine Number\n");
+    for(ptr=const_table;ptr!=(symrec *)0;ptr=(symrec *)ptr->next)
+  		fprintf(sym_tab,"\n%50s%60s",ptr->name,ptr->line);
+  	fclose(sym_tab);
+	}
+}
+
+
+
+} */

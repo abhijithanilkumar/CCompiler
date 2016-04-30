@@ -18,6 +18,8 @@ extern char *tempid;
 %token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
 %token XOR_ASSIGN OR_ASSIGN TYPE_NAME
 
+
+
 %token TYPEDEF EXTERN STATIC AUTO REGISTER
 %token CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
 %token STRUCT UNION ENUM ELLIPSIS
@@ -33,7 +35,7 @@ extern char *tempid;
 primary_expression
 	: IDENTIFIER  { putsym(tempid, 'v', line); }
 	| CONSTANT    { putsym(tempid, 'c', line);}
-	| STRING_LITERAL  { putsym(tempid, 'c', line);}
+	| STRING_LITERAL  { putsym(tempid, 's', line);}
 	| '(' expression ')' { putsym("(", 'p', line); putsym(")", 'p', line); }
 	;
 

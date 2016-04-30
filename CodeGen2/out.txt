@@ -1,0 +1,168 @@
+PARSER: Generating jump marker.
+In genquad
+GOTO
+In addToList
+PARSER: Done with the jump marker.
+PARSER: found integer variable type
+PARSER: found identifier main
+PARSER: found EPSILON parameter
+PARSER: found identifier a
+PARSER: found integer declaration
+PARSER: found identifier b
+PARSER: found mutliple declarations
+PARSER: found identifier t
+PARSER: found mutliple declarations
+PARSER: found identifier i
+PARSER: found mutliple declarations
+PARSER: found declaration
+PARSER: found identifier d
+PARSER: found integer declaration
+PARSER: found declaration list
+PARSER: found identifier a
+PARSER: Processing constant.
+PARSER: Done processing constant.
+PARSER: found real assignment
+In genquad
+a := 5
+PARSER: Processing matched assignment.
+PARSER: Done processing matched assignment.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing single statement in list statement list.
+PARSER: Done processing single statement in list statement list.
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: found identifier b
+PARSER: Processing constant.
+PARSER: Done processing constant.
+PARSER: found real assignment
+In genquad
+b := 8
+PARSER: Processing matched assignment.
+PARSER: Done processing matched assignment.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing statement list.
+In backpatch with 2
+PARSER: Done processing statement list.
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: found identifier t
+PARSER: Processing constant.
+PARSER: Done processing constant.
+PARSER: found real assignment
+In genquad
+t := 9
+PARSER: Processing matched assignment.
+PARSER: Done processing matched assignment.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing statement list.
+In backpatch with 3
+PARSER: Done processing statement list.
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: found identifier t
+PARSER: Processing identifier.
+PARSER: Done processing identifier.
+PARSER: Processing constant.
+PARSER: Done processing constant.
+PARSER: Processing logical smaller.
+In genquad
+IF (t < 15) GOTO
+In addToList
+In genquad
+GOTO
+In addToList
+PARSER: Done processing logical smaller.
+PARSER: found expression as assignment TrueFalse Only!
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: found identifier a
+PARSER: Processing identifier.
+PARSER: Done processing identifier.
+PARSER: found identifier b
+PARSER: Processing identifier.
+PARSER: Done processing identifier.
+PARSER: Processing logical smaller.
+In genquad
+IF (a < b) GOTO
+In addToList
+In genquad
+GOTO
+In addToList
+PARSER: Done processing logical smaller.
+PARSER: found expression as assignment TrueFalse Only!
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: found identifier b
+PARSER: found identifier a
+PARSER: Processing identifier.
+PARSER: Done processing identifier.
+PARSER: found real assignment
+In genquad
+b := a
+PARSER: Processing matched assignment.
+PARSER: Done processing matched assignment.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing single statement in list statement list.
+PARSER: Done processing single statement in list statement list.
+PARSER: Processing statement block.
+PARSER: Done processing statement block.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing unmatched if then.
+In backpatch with 8
+backpatching: IF (a < b) GOTOIn mergelists
+PARSER: Done processing unmatched if then.
+PARSER: Processing unmatched statement.
+PARSER: Done processing unmatched statement.
+PARSER: Processing single statement in list statement list.
+PARSER: Done processing single statement in list statement list.
+PARSER: Processing statement block.
+PARSER: Done processing statement block.
+PARSER: Generating jump marker.
+In genquad
+GOTO
+In addToList
+PARSER: Done with the jump marker.
+PARSER: Processing matched while.
+In backpatch with 6
+backpatching: IF (t < 15) GOTOIn backpatch with 4
+backpatching: GOTOIn backpatch with 4
+backpatching: GOTOPARSER: Done processing matched while.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing statement list.
+In backpatch with 4
+PARSER: Done processing statement list.
+PARSER: Generating marker.
+PARSER: Done with the marker.
+PARSER: Processing constant.
+PARSER: Done processing constant.
+PARSER: found expression as assignment 0
+PARSER: Processing return.
+In genquad
+RETURN 0
+PARSER: Done processing return.
+PARSER: Processing matched statement.
+PARSER: Done processing matched statement.
+PARSER: Processing statement list.
+In backpatch with 10
+backpatching: GOTOPARSER: Done processing statement list.
+PARSER: found function body with declarations
+PARSER: found function definition for main having 0 parameters starting at line 0
+FUNC: main
+FUNC: par a - 4
+FUNC: par b - 4
+FUNC: par t - 4
+FUNC: par i - 4
+FUNC: par d - 4
+PARSER: Processing single function.
+In backpatch with 11
+PARSER: Done processing single function.
+In backpatch with 1
+backpatching: GOTO

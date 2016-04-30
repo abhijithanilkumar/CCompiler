@@ -1,0 +1,26 @@
+SYMBOLS
+-------------
+Name            Type    Int_Typ    Offset/Size    Line    Parent 
+-----------------------------------------------------------------
+a               Int     None       0              0       main           
+b               Int     None       4              0       main           
+t               Int     None       8              0       main           
+i               Int     None       12             0       main           
+d               Int     None       16             0       main           
+main            Main    Int        20             0       None           
+
+
+CODE
+----
+
+0    GOTO 1
+1    a := 5
+2    b := 8
+3    t := 9
+4    IF (t < 15) GOTO 6
+5    GOTO 10
+6    IF (a < b) GOTO 8
+7    GOTO 4
+8    b := a
+9    GOTO 4
+10   RETURN 0

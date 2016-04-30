@@ -4,10 +4,13 @@ void main()
 {
  	int a[10],i,j;
 
+ 	char b[50] = "chirag";
+
  	while(i<10)
- 	{
+ 	{	
  		scanf("%d",&a[i]);
  	}
+ 	
 
 
 	for(i=0;i<10;i++)
@@ -17,14 +20,13 @@ void main()
  			if(a[j]>a[j+1])
  			{
  				swap(&a[j],&a[j+1]);
- 			}
+ 			}			
  		}
  	}
 }
 
-void swap(int *a,int *b)
-{
- 	*a=*a+*b;
- 	*b=*a-*b;
- 	*a=*a-*b;
-}
+
+
+
+
+
