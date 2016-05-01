@@ -2,12 +2,9 @@
 
 void main(){
 
-	int a= 0, b = 1;
-
-	for(i=0;i<a;i++){
-		if(a>b)
-			printf("a is greater than b\n");
+	int a = 4, b = 1.2;
+	int i;
+	for(i=4;i<a;i++){
 	}
-
 
 }

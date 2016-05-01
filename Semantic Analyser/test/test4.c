@@ -1,9 +1,7 @@
-#include <stdlib.h>
-
 // This is a demo programm
 
 
-int main (){
+void main (){
 
 	int a, b, t ,i;
 	int d;
@@ -15,10 +13,4 @@ int main (){
 			b = a;
 		}
 	}
-
-	for(i=0;i<10;++i)
-	  a = a + 1;
-
-	return 0;
-
 }

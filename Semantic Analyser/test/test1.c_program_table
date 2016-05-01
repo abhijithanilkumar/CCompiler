@@ -5,8 +5,7 @@
 
 TYPE			    SYMBOL
 
-float			         f
-int			         c
+int			         i
 int			         b
 int			         a
 void			      main

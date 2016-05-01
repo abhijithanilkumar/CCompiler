@@ -1,4 +1,9 @@
-Type	Symbol
-3	b
-3	a
-1	main
+
+
+				SYMBOL TABLE
+============================================
+
+TYPE			    SYMBOL
+
+int			         b
+void			      main

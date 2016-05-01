@@ -47,131 +47,133 @@ extern int yydebug;
   {
     IDENTIFIER = 258,
     CONSTANT = 259,
-    STRING_LITERAL = 260,
-    SIZEOF = 261,
-    PTR_OP = 262,
-    INC_OP = 263,
-    DEC_OP = 264,
-    LEFT_OP = 265,
-    RIGHT_OP = 266,
-    LE_OP = 267,
-    GE_OP = 268,
-    EQ_OP = 269,
-    NE_OP = 270,
-    AND_OP = 271,
-    OR_OP = 272,
-    MUL_ASSIGN = 273,
-    DIV_ASSIGN = 274,
-    MOD_ASSIGN = 275,
-    ADD_ASSIGN = 276,
-    SUB_ASSIGN = 277,
-    LEFT_ASSIGN = 278,
-    RIGHT_ASSIGN = 279,
-    AND_ASSIGN = 280,
-    XOR_ASSIGN = 281,
-    OR_ASSIGN = 282,
-    TYPE_NAME = 283,
-    SINGLE = 284,
-    PRINTF = 285,
-    SCANF = 286,
-    TYPEDEF = 287,
-    EXTERN = 288,
-    STATIC = 289,
-    AUTO = 290,
-    REGISTER = 291,
-    CHAR = 292,
-    SHORT = 293,
-    INT = 294,
-    LONG = 295,
-    SIGNED = 296,
-    UNSIGNED = 297,
-    FLOAT = 298,
-    DOUBLE = 299,
-    CONST = 300,
-    VOLATILE = 301,
-    VOID = 302,
-    STRUCT = 303,
-    UNION = 304,
-    ENUM = 305,
-    ELLIPSIS = 306,
-    CASE = 307,
-    DEFAULT = 308,
-    IF = 309,
-    ELSE = 310,
-    SWITCH = 311,
-    WHILE = 312,
-    DO = 313,
-    FOR = 314,
-    GOTO = 315,
-    CONTINUE = 316,
-    BREAK = 317,
-    RETURN = 318,
-    LOWER_THAN_ELSE = 319
+    FLCONSTANT = 260,
+    STRING_LITERAL = 261,
+    SIZEOF = 262,
+    PTR_OP = 263,
+    INC_OP = 264,
+    DEC_OP = 265,
+    LEFT_OP = 266,
+    RIGHT_OP = 267,
+    LE_OP = 268,
+    GE_OP = 269,
+    EQ_OP = 270,
+    NE_OP = 271,
+    AND_OP = 272,
+    OR_OP = 273,
+    MUL_ASSIGN = 274,
+    DIV_ASSIGN = 275,
+    MOD_ASSIGN = 276,
+    ADD_ASSIGN = 277,
+    SUB_ASSIGN = 278,
+    LEFT_ASSIGN = 279,
+    RIGHT_ASSIGN = 280,
+    AND_ASSIGN = 281,
+    XOR_ASSIGN = 282,
+    OR_ASSIGN = 283,
+    TYPE_NAME = 284,
+    SINGLE = 285,
+    PRINTF = 286,
+    SCANF = 287,
+    TYPEDEF = 288,
+    EXTERN = 289,
+    STATIC = 290,
+    AUTO = 291,
+    REGISTER = 292,
+    CHAR = 293,
+    SHORT = 294,
+    INT = 295,
+    LONG = 296,
+    SIGNED = 297,
+    UNSIGNED = 298,
+    FLOAT = 299,
+    DOUBLE = 300,
+    CONST = 301,
+    VOLATILE = 302,
+    VOID = 303,
+    STRUCT = 304,
+    UNION = 305,
+    ENUM = 306,
+    ELLIPSIS = 307,
+    CASE = 308,
+    DEFAULT = 309,
+    IF = 310,
+    ELSE = 311,
+    SWITCH = 312,
+    WHILE = 313,
+    DO = 314,
+    FOR = 315,
+    GOTO = 316,
+    CONTINUE = 317,
+    BREAK = 318,
+    RETURN = 319,
+    LOWER_THAN_ELSE = 320
   };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
 #define CONSTANT 259
-#define STRING_LITERAL 260
-#define SIZEOF 261
-#define PTR_OP 262
-#define INC_OP 263
-#define DEC_OP 264
-#define LEFT_OP 265
-#define RIGHT_OP 266
-#define LE_OP 267
-#define GE_OP 268
-#define EQ_OP 269
-#define NE_OP 270
-#define AND_OP 271
-#define OR_OP 272
-#define MUL_ASSIGN 273
-#define DIV_ASSIGN 274
-#define MOD_ASSIGN 275
-#define ADD_ASSIGN 276
-#define SUB_ASSIGN 277
-#define LEFT_ASSIGN 278
-#define RIGHT_ASSIGN 279
-#define AND_ASSIGN 280
-#define XOR_ASSIGN 281
-#define OR_ASSIGN 282
-#define TYPE_NAME 283
-#define SINGLE 284
-#define PRINTF 285
-#define SCANF 286
-#define TYPEDEF 287
-#define EXTERN 288
-#define STATIC 289
-#define AUTO 290
-#define REGISTER 291
-#define CHAR 292
-#define SHORT 293
-#define INT 294
-#define LONG 295
-#define SIGNED 296
-#define UNSIGNED 297
-#define FLOAT 298
-#define DOUBLE 299
-#define CONST 300
-#define VOLATILE 301
-#define VOID 302
-#define STRUCT 303
-#define UNION 304
-#define ENUM 305
-#define ELLIPSIS 306
-#define CASE 307
-#define DEFAULT 308
-#define IF 309
-#define ELSE 310
-#define SWITCH 311
-#define WHILE 312
-#define DO 313
-#define FOR 314
-#define GOTO 315
-#define CONTINUE 316
-#define BREAK 317
-#define RETURN 318
-#define LOWER_THAN_ELSE 319
+#define FLCONSTANT 260
+#define STRING_LITERAL 261
+#define SIZEOF 262
+#define PTR_OP 263
+#define INC_OP 264
+#define DEC_OP 265
+#define LEFT_OP 266
+#define RIGHT_OP 267
+#define LE_OP 268
+#define GE_OP 269
+#define EQ_OP 270
+#define NE_OP 271
+#define AND_OP 272
+#define OR_OP 273
+#define MUL_ASSIGN 274
+#define DIV_ASSIGN 275
+#define MOD_ASSIGN 276
+#define ADD_ASSIGN 277
+#define SUB_ASSIGN 278
+#define LEFT_ASSIGN 279
+#define RIGHT_ASSIGN 280
+#define AND_ASSIGN 281
+#define XOR_ASSIGN 282
+#define OR_ASSIGN 283
+#define TYPE_NAME 284
+#define SINGLE 285
+#define PRINTF 286
+#define SCANF 287
+#define TYPEDEF 288
+#define EXTERN 289
+#define STATIC 290
+#define AUTO 291
+#define REGISTER 292
+#define CHAR 293
+#define SHORT 294
+#define INT 295
+#define LONG 296
+#define SIGNED 297
+#define UNSIGNED 298
+#define FLOAT 299
+#define DOUBLE 300
+#define CONST 301
+#define VOLATILE 302
+#define VOID 303
+#define STRUCT 304
+#define UNION 305
+#define ENUM 306
+#define ELLIPSIS 307
+#define CASE 308
+#define DEFAULT 309
+#define IF 310
+#define ELSE 311
+#define SWITCH 312
+#define WHILE 313
+#define DO 314
+#define FOR 315
+#define GOTO 316
+#define CONTINUE 317
+#define BREAK 318
+#define RETURN 319
+#define LOWER_THAN_ELSE 320
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

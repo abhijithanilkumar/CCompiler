@@ -12,9 +12,19 @@ int cnt=1;
 int line=1;
 char tempid[100];
 %}
+comment (\/\/.*)
+comstr (\/\*)
+comend (\*\/)
+%x C_COMMENT
 
 %%
-"/*"			{comment();}
+
+{comment}      {/* ignore comments */}
+{comstr}            { BEGIN(C_COMMENT); }
+<C_COMMENT>{comend} { BEGIN(INITIAL);}
+<C_COMMENT>\n {line++;}
+<C_COMMENT>. {/* ignore comments */}
+
 "printf"		{ cnt+=yyleng;ECHO; return(PRINTF); }
 "scanf"			{ cnt+=yyleng;ECHO; return(SCANF); }
 "auto"			{ cnt+=yyleng;ECHO; return(AUTO); }
@@ -57,9 +67,9 @@ char tempid[100];
 {D}+{IS}?		{ cnt+=yyleng;ECHO; return(CONSTANT); }
 L?'(\\.|[^\\'])+'	{ cnt+=yyleng;ECHO; return(CONSTANT); }
 
-{D}+{E}{FS}?		{ cnt+=yyleng;ECHO; return(CONSTANT); }
-{D}*"."{D}+({E})?{FS}?	{ cnt+=yyleng;ECHO; return(CONSTANT); }
-{D}+"."{D}*({E})?{FS}?	{ cnt+=yyleng;ECHO; return(CONSTANT); }
+{D}+{E}{FS}?		{ cnt+=yyleng;ECHO; return(FLCONSTANT); }
+{D}*"."{D}+({E})?{FS}?	{ cnt+=yyleng;ECHO; return(FLCONSTANT); }
+{D}+"."{D}*({E})?{FS}?	{ cnt+=yyleng;ECHO; return(FLCONSTANT); }
 
 L?\"(\\.|[^\\"])*\"	{ cnt+=yyleng;ECHO; return(STRING_LITERAL); }
 
@@ -109,7 +119,7 @@ L?\"(\\.|[^\\"])*\"	{ cnt+=yyleng;ECHO; return(STRING_LITERAL); }
 "^"			{ cnt+=yyleng;ECHO; return('^'); }
 "|"			{ cnt+=yyleng;ECHO; return('|'); }
 "?"			{ cnt+=yyleng;ECHO; return('?'); }
-		
+
 [ ]			{cnt+=yyleng;ECHO;}
 [\t\v\f]		{ cnt+=yyleng; }
 [\n]			{line++;cnt=1;}
@@ -126,15 +136,13 @@ comment()
 loop:
 	while ((c = input()) != '*' && c != 0)
 	{
-		if(c=='\n')	{line++;cnt=1;} 
+		if(c=='\n')	{line++;cnt=1;}
 		else	{cnt++;}
 	}
-		//putchar(c); PUTCHAR only if comments need to be shown! 
+		//putchar(c); PUTCHAR only if comments need to be shown!
 	if ((c1 = input()) != '/' && c1 != 0)
 	{
 		unput(c1);
 		goto loop;
 	}
 }
-
-

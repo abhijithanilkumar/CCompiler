@@ -1,45 +1,41 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "symbol_table.h"
 extern FILE *yyin;
 extern FILE *yyout;
+extern int yylineno;
 extern int column;
 extern int line;
 extern int cnt;
 extern char *yytext,tempid[100];
-int temp,err,err1=0;
+int temp,err=0,err1=0,tchk=3;
 
 install()
-{ 
+{
 	symrec *s;
 	s = getsym (tempid);
 	if (s == 0)
 	s = putsym (tempid,temp);
-	else 
+	else
 	{
-//		printf(" VOID=1 ");
-//	 printf(" CHAR=2 ");
-//	 printf(" INT=3 ");
-//	 printf(" FLOAT=4 ");
-//	 printf(" DOUBLE=4 ");
 		printf( "\nERROR: Semantic error at Pos : %d : %d : %s is already defined as %s\n",line,cnt,s->name,s->type );
-//		exit(0);	
+		err1=1;
+		exit(0);
 	}
-	err1=1;
 }
+
 int context_check()
-{ 
+{
 	symrec *s;
-	s = getsym(tempid);	
+	s = getsym(tempid);
 	if (s == 0 )
-
 	{
-
-	printf( "\nERROR: Semantic error at Pos : %d : %d : %s is an undeclared identifier\n",line,cnt,tempid);//exit(0);
-
-
-	return 0;}
+		printf( "\nERROR: Semantic error at Pos : %d : %d : %s is an undeclared identifier\n",line,cnt,tempid);//exit(0);
+		err1=1;
+		exit(0);
+	}
 	else
 	{
         if(strcmp(s->type,"void")==0)
@@ -51,31 +47,26 @@ int context_check()
         if(strcmp(s->type,"char")==0)
 	        return(2);
 	}
-	err1=1;
-	
 }
+
 type_err(int t1,int t2)
 {
-	if(t1&&t2)
+	if(t2 == 0)
+		t2 = tchk;
+	if(t1!=t2)
 	{
-//	 printf(" VOID=1 ");
-//	 printf(" CHAR=2 ");
-//	 printf(" INT=3 ");
-//	 printf(" FLOAT=4 ");
-//	 printf(" DOUBLE=4 ");	
-
-	printf( "\nERROR: Semantic error at Pos : %d : %d : Type mismatch for %s between %d and %d \n\n",line,cnt,tempid,t1,t2);
-
-	err1=1;
-//	exit(0);	
-	}	
+		printf( "\nERROR: Semantic error : Type mismatch!\n\n");
+		err1=1;
+		exit(0);
+	}
+	tchk=3;
 }
 
 %}
 
 
 
-%token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
+%token IDENTIFIER CONSTANT FLCONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
 %token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
@@ -94,7 +85,8 @@ type_err(int t1,int t2)
 
 primary_expression
 	: IDENTIFIER	{$$=context_check();}
-	| CONSTANT
+	| FLCONSTANT {tchk=4;}
+	| CONSTANT {}
 	| STRING_LITERAL
 	| '(' expression ')' {$$= $2;}
 	;
@@ -104,7 +96,7 @@ postfix_expression
 	| postfix_expression '[' expression ']'
 	| postfix_expression '(' ')'
 	| postfix_expression '(' argument_expression_list ')'
-	| postfix_expression '.' IDENTIFIER	
+	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP
 	| postfix_expression DEC_OP
@@ -181,7 +173,7 @@ exclusive_or_expression
 	| exclusive_or_expression '^' and_expression
 	;
 
-inclusive_or_expression	
+inclusive_or_expression
 	: exclusive_or_expression	{$$=$1;}
 	| inclusive_or_expression '|' exclusive_or_expression
 	;
@@ -203,7 +195,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression	{$$=$1;}
-	| unary_expression assignment_operator assignment_expression	{if($1!=$3){type_err($1,$3);}}
+	| unary_expression assignment_operator assignment_expression	{ $$=$3; type_err($1,$3);}
 	;
 
 assignment_operator
@@ -494,7 +486,7 @@ function_definition
 	| declarator compound_statement
 	;
 
-declaration : error ';' 
+declaration : error ';'
 %%
 
 yyerror(s)
@@ -510,7 +502,7 @@ int argc;
 char **argv;
 {
 
-	char *fname;	
+	char *fname;
 	++argv,--argc;/*skip program name*/
 	if(argc>0)
 	{
@@ -524,17 +516,17 @@ char **argv;
 		printf("Please give the c filename as an argument.\n");
 	}
 	yyparse();
-	if(err==0)
-	printf("No Syntax errors found!\n");
+	if(err==0 && err1==0)
+	printf("Compilation Successful!\n");
 	fname=argv[0];strcat(fname,"_table");
 	FILE *sym_tab=fopen(fname,"w");
-	fprintf(sym_tab,"Type\tSymbol\n");
-	symrec *ptr;	
+	symrec *ptr;
+	fprintf(sym_tab,"\n\n\t\t\t\tSYMBOL TABLE\n============================================\n\n");
+	fprintf(sym_tab,"TYPE\t\t\t    SYMBOL\n\n");
 	for(ptr=sym_table;ptr!=(symrec *)0;ptr=(symrec *)ptr->next)
 	{
-		fprintf(sym_tab,"%s\t%s\n",ptr->type,ptr->name);
+		fprintf(sym_tab,"%s\t\t\t%10s\n",ptr->type,ptr->name);
 	}
-	fclose(sym_tab);	
-	
-}	
+	fclose(sym_tab);
 
+}
