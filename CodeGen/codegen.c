@@ -191,14 +191,14 @@ SymbolTableEntry* addSymbol(const char *name,
 {
     if(name == NULL || strcmp(name, "") == 0)
     {
-        printError("Parameter \"name\" nicht korrekt\"");
+        printError("Parameter \"name\" incorrect\"");
 
         return 0;
     }
 
     if(parent != NULL && strcmp(parent, "None") == 0)
     {
-        printError("\"parent\" darf nicht \"None\" sein, bitte f�r diesen Zweck PARENT_NONE benutzen!");
+        printError("\"parent\" not allowed \"None\" Please use for this purpose PARENT NONE!");
 
         return 0;
     }
@@ -238,7 +238,7 @@ bool printCode(FILE *outputFile)
 
     if(codeLine == NULL)
     {
-        printError("Es gibt keine Codezeilen!");
+        printError("There are no lines of code!");
 
         return false;
     }
@@ -247,7 +247,7 @@ bool printCode(FILE *outputFile)
 
     if(fprintf(outputFile, "\n\nCODE\n----\n\n") <= 0)
     {
-        printError("Schreibfehler");
+        printError("Spelling mistake");
 
         return false;
     }
@@ -265,7 +265,7 @@ bool printCode(FILE *outputFile)
     	}
         if(ret <= 0)
         {
-            printError("Schreibfehler");
+            printError("Spelling mistake");
 
             return false;
         }
@@ -282,7 +282,7 @@ bool printSymbolTable(FILE *outputFile)
 {
     if(symbolTable == NULL)
     {
-        printError("Symboltabelle ist leer!");
+        printError("Symbol table is empty!");
 
         return false;
     }
@@ -295,7 +295,7 @@ bool printSymbolTable(FILE *outputFile)
 
     if(ret <= 0)
     {
-        printError("Schreibfehler");
+        printError("Spelling mistake");
 
         return false;
     }
@@ -320,7 +320,7 @@ bool printSymbolTable(FILE *outputFile)
 
         if(ret <= 0)
         {
-            printError("Schreibfehler");
+            printError("Spelling mistake");
 
             return false;
         }
@@ -411,6 +411,7 @@ void addSymbolToQueue(char *name, SYMBOL_TYPE type, unsigned long param_no) {
 		default: symbol->offsetOrSize = 4;
     }
     symbol->parameter = param_no;
+    symbol->line = yylineno;
 
     if (queueHead == NULL) {
         queueHead = symbol;

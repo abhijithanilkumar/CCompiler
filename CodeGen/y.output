@@ -1,2468 +1,2466 @@
-   0  $accept : program_head $end
-
-   1  program_head : program
-
-   2  program : jump_marker function
-   3          | program function
-
-   4  function : var_type id '(' parameter_list ')' ';'
-   5           | var_type id '(' parameter_list ')' function_body
-
-   6  function_body : '{' statement_list '}'
-   7                | '{' declaration_list statement_list '}'
-
-   8  declaration_list : declaration ';'
-   9                   | declaration_list declaration ';'
-
-  10  declaration : INT id
-  11              | FLOAT id
-  12              | declaration ',' id
-
-  13  parameter_list : INT id
-  14                 | FLOAT id
-  15                 | parameter_list ',' INT id
-  16                 | parameter_list ',' FLOAT id
-  17                 | VOID
-  18                 |
-
-  19  var_type : INT
-  20           | VOID
-  21           | FLOAT
-
-  22  statement_list : statement
-  23                 | statement_list marker statement
-
-  24  statement : matched_statement
-  25            | unmatched_statement
+Grammar
+
+    0 $accept: program_head $end
+
+    1 program_head: program
+
+    2 program: jump_marker function
+    3        | program function
+
+    4 function: var_type id '(' parameter_list ')' ';'
+    5         | var_type id '(' parameter_list ')' function_body
+
+    6 function_body: '{' statement_list '}'
+    7              | '{' declaration_list statement_list '}'
+
+    8 declaration_list: declaration ';'
+    9                 | declaration_list declaration ';'
+
+   10 declaration: INT id
+   11            | FLOAT id
+   12            | declaration ',' id
+
+   13 parameter_list: INT id
+   14               | FLOAT id
+   15               | parameter_list ',' INT id
+   16               | parameter_list ',' FLOAT id
+   17               | VOID
+   18               | %empty
+
+   19 var_type: INT
+   20         | VOID
+   21         | FLOAT
+
+   22 statement_list: statement
+   23               | statement_list marker statement
+
+   24 statement: matched_statement
+   25          | unmatched_statement
+
+   26 matched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement
+   27                  | assignment ';'
+   28                  | RETURN ';'
+   29                  | RETURN assignment ';'
+   30                  | WHILE marker '(' assignment ')' marker matched_statement jump_marker
+   31                  | DO marker statement WHILE '(' marker assignment ')' ';'
+   32                  | FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   33                  | '{' statement_list '}'
+   34                  | '{' '}'
+
+   35 unmatched_statement: IF '(' assignment ')' marker statement
+   36                    | WHILE marker '(' assignment ')' marker unmatched_statement jump_marker
+   37                    | FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
+   38                    | IF '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement
+
+   39 assignment: expression
+   40           | id '=' expression
+
+   41 expression: INC_OP expression
+   42           | DEC_OP expression
+   43           | expression LOG_OR marker expression
+   44           | expression LOG_AND marker expression
+   45           | expression NOT_EQUAL expression
+   46           | expression EQUAL expression
+   47           | expression GREATER_OR_EQUAL expression
+   48           | expression LESS_OR_EQUAL expression
+   49           | expression '>' expression
+   50           | expression '<' expression
+   51           | expression SHIFTLEFT expression
+   52           | expression '+' expression
+   53           | expression '-' expression
+   54           | expression '*' expression
+   55           | expression '/' expression
+   56           | expression '%' expression
+   57           | '!' expression
+   58           | U_PLUS expression
+   59           | U_MINUS expression
+   60           | CONSTANT
+   61           | '(' expression ')'
+   62           | id '(' exp_list ')'
+   63           | id '(' ')'
+   64           | id
+
+   65 exp_list: expression
+   66         | exp_list ',' expression
+
+   67 id: IDENTIFIER
+
+   68 marker: %empty
+
+   69 jump_marker: %empty
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 57
+'%' (37) 56
+'(' (40) 4 5 26 30 31 32 35 36 37 38 61 62 63
+')' (41) 4 5 26 30 31 32 35 36 37 38 61 62 63
+'*' (42) 54
+'+' (43) 52
+',' (44) 12 15 16 66
+'-' (45) 53
+'/' (47) 55
+';' (59) 4 8 9 27 28 29 31 32 37
+'<' (60) 50
+'=' (61) 40
+'>' (62) 49
+'{' (123) 6 7 33 34
+'}' (125) 6 7 33 34
+error (256)
+VOID (258) 17 20
+INT (259) 10 13 15 19
+FLOAT (260) 11 14 16 21
+CONSTANT (261) 60
+IDENTIFIER (262) 67
+IF (263) 26 35 38
+ELSE (264) 26 38
+RETURN (265) 28 29
+DO (266) 31
+WHILE (267) 30 31 36
+FOR (268) 32 37
+INC_OP (269) 41
+DEC_OP (270) 42
+U_PLUS (271) 58
+U_MINUS (272) 59
+EQUAL (273) 46
+NOT_EQUAL (274) 45
+GREATER_OR_EQUAL (275) 47
+LESS_OR_EQUAL (276) 48
+SHIFTLEFT (277) 51
+LOG_AND (278) 44
+LOG_OR (279) 43
+
+
+Nonterminals, with rules where they appear
+
+$accept (40)
+    on left: 0
+program_head (41)
+    on left: 1, on right: 0
+program (42)
+    on left: 2 3, on right: 1 3
+function (43)
+    on left: 4 5, on right: 2 3
+function_body (44)
+    on left: 6 7, on right: 5
+declaration_list (45)
+    on left: 8 9, on right: 7 9
+declaration (46)
+    on left: 10 11 12, on right: 8 9 12
+parameter_list (47)
+    on left: 13 14 15 16 17 18, on right: 4 5 15 16
+var_type (48)
+    on left: 19 20 21, on right: 4 5
+statement_list (49)
+    on left: 22 23, on right: 6 7 23 33
+statement (50)
+    on left: 24 25, on right: 22 23 31 35
+matched_statement (51)
+    on left: 26 27 28 29 30 31 32 33 34, on right: 24 26 30 32 38
+unmatched_statement (52)
+    on left: 35 36 37 38, on right: 25 36 37 38
+assignment (53)
+    on left: 39 40, on right: 26 27 29 30 31 32 35 36 37 38
+expression (54)
+    on left: 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58
+    59 60 61 62 63 64, on right: 39 40 41 42 43 44 45 46 47 48 49 50
+    51 52 53 54 55 56 57 58 59 61 65 66
+exp_list (55)
+    on left: 65 66, on right: 62 66
+id (56)
+    on left: 67, on right: 4 5 10 11 12 13 14 15 16 40 62 63 64
+marker (57)
+    on left: 68, on right: 23 26 30 31 32 35 36 37 38 43 44
+jump_marker (58)
+    on left: 69, on right: 2 26 30 32 36 37 38
 
-  26  matched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement
-  27                    | assignment ';'
-  28                    | RETURN ';'
-  29                    | RETURN assignment ';'
-  30                    | WHILE marker '(' assignment ')' marker matched_statement jump_marker
-  31                    | DO marker statement WHILE '(' marker assignment ')' ';'
-  32                    | FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
-  33                    | '{' statement_list '}'
-  34                    | '{' '}'
 
-  35  unmatched_statement : IF '(' assignment ')' marker statement
-  36                      | WHILE marker '(' assignment ')' marker unmatched_statement jump_marker
-  37                      | FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
-  38                      | IF '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement
+State 0
 
-  39  assignment : expression
-  40             | id '=' expression
+    0 $accept: . program_head $end
 
-  41  expression : INC_OP expression
-  42             | DEC_OP expression
-  43             | expression LOG_OR marker expression
-  44             | expression LOG_AND marker expression
-  45             | expression NOT_EQUAL expression
-  46             | expression EQUAL expression
-  47             | expression GREATER_OR_EQUAL expression
-  48             | expression LESS_OR_EQUAL expression
-  49             | expression '>' expression
-  50             | expression '<' expression
-  51             | expression SHIFTLEFT expression
-  52             | expression '+' expression
-  53             | expression '-' expression
-  54             | expression '*' expression
-  55             | expression '/' expression
-  56             | expression '%' expression
-  57             | '!' expression
-  58             | U_PLUS expression
-  59             | U_MINUS expression
-  60             | CONSTANT
-  61             | '(' expression ')'
-  62             | id '(' exp_list ')'
-  63             | id '(' ')'
-  64             | id
+    $default  reduce using rule 69 (jump_marker)
 
-  65  exp_list : expression
-  66           | exp_list ',' expression
+    program_head  go to state 1
+    program       go to state 2
+    jump_marker   go to state 3
 
-  67  id : IDENTIFIER
 
-  68  marker :
+State 1
 
-  69  jump_marker :
-
-state 0
-	$accept : . program_head $end  (0)
-	jump_marker : .  (69)
+    0 $accept: program_head . $end
 
-	.  reduce 69
+    $end  shift, and go to state 4
 
-	program_head  goto 1
-	program  goto 2
-	jump_marker  goto 3
 
+State 2
 
-state 1
-	$accept : program_head . $end  (0)
+    1 program_head: program .
+    3 program: program . function
 
-	$end  accept
+    VOID   shift, and go to state 5
+    INT    shift, and go to state 6
+    FLOAT  shift, and go to state 7
 
+    $default  reduce using rule 1 (program_head)
 
-state 2
-	program_head : program .  (1)
-	program : program . function  (3)
+    function  go to state 8
+    var_type  go to state 9
 
-	VOID  shift 4
-	INT  shift 5
-	FLOAT  shift 6
-	$end  reduce 1
 
-	var_type  goto 7
-	function  goto 8
+State 3
 
+    2 program: jump_marker . function
 
-state 3
-	program : jump_marker . function  (2)
+    VOID   shift, and go to state 5
+    INT    shift, and go to state 6
+    FLOAT  shift, and go to state 7
 
-	VOID  shift 4
-	INT  shift 5
-	FLOAT  shift 6
-	.  error
+    function  go to state 10
+    var_type  go to state 9
 
-	var_type  goto 7
-	function  goto 9
 
+State 4
 
-state 4
-	var_type : VOID .  (20)
+    0 $accept: program_head $end .
 
-	.  reduce 20
+    $default  accept
 
 
-state 5
-	var_type : INT .  (19)
+State 5
 
-	.  reduce 19
+   20 var_type: VOID .
 
+    $default  reduce using rule 20 (var_type)
 
-state 6
-	var_type : FLOAT .  (21)
 
-	.  reduce 21
+State 6
 
+   19 var_type: INT .
 
-state 7
-	function : var_type . id '(' parameter_list ')' ';'  (4)
-	function : var_type . id '(' parameter_list ')' function_body  (5)
+    $default  reduce using rule 19 (var_type)
 
-	IDENTIFIER  shift 10
-	.  error
 
-	id  goto 11
+State 7
 
+   21 var_type: FLOAT .
 
-state 8
-	program : program function .  (3)
+    $default  reduce using rule 21 (var_type)
 
-	.  reduce 3
 
+State 8
 
-state 9
-	program : jump_marker function .  (2)
+    3 program: program function .
 
-	.  reduce 2
+    $default  reduce using rule 3 (program)
 
 
-state 10
-	id : IDENTIFIER .  (67)
+State 9
 
-	.  reduce 67
+    4 function: var_type . id '(' parameter_list ')' ';'
+    5         | var_type . id '(' parameter_list ')' function_body
 
+    IDENTIFIER  shift, and go to state 11
 
-state 11
-	function : var_type id . '(' parameter_list ')' ';'  (4)
-	function : var_type id . '(' parameter_list ')' function_body  (5)
+    id  go to state 12
 
-	'('  shift 12
-	.  error
 
+State 10
 
-state 12
-	function : var_type id '(' . parameter_list ')' ';'  (4)
-	function : var_type id '(' . parameter_list ')' function_body  (5)
-	parameter_list : .  (18)
+    2 program: jump_marker function .
 
-	VOID  shift 13
-	INT  shift 14
-	FLOAT  shift 15
-	')'  reduce 18
-	','  reduce 18
+    $default  reduce using rule 2 (program)
 
-	parameter_list  goto 16
 
+State 11
 
-state 13
-	parameter_list : VOID .  (17)
+   67 id: IDENTIFIER .
 
-	.  reduce 17
+    $default  reduce using rule 67 (id)
 
 
-state 14
-	parameter_list : INT . id  (13)
+State 12
 
-	IDENTIFIER  shift 10
-	.  error
+    4 function: var_type id . '(' parameter_list ')' ';'
+    5         | var_type id . '(' parameter_list ')' function_body
 
-	id  goto 17
+    '('  shift, and go to state 13
 
 
-state 15
-	parameter_list : FLOAT . id  (14)
+State 13
 
-	IDENTIFIER  shift 10
-	.  error
+    4 function: var_type id '(' . parameter_list ')' ';'
+    5         | var_type id '(' . parameter_list ')' function_body
 
-	id  goto 18
+    VOID   shift, and go to state 14
+    INT    shift, and go to state 15
+    FLOAT  shift, and go to state 16
 
+    $default  reduce using rule 18 (parameter_list)
 
-state 16
-	function : var_type id '(' parameter_list . ')' ';'  (4)
-	function : var_type id '(' parameter_list . ')' function_body  (5)
-	parameter_list : parameter_list . ',' INT id  (15)
-	parameter_list : parameter_list . ',' FLOAT id  (16)
+    parameter_list  go to state 17
 
-	')'  shift 19
-	','  shift 20
-	.  error
 
+State 14
 
-state 17
-	parameter_list : INT id .  (13)
+   17 parameter_list: VOID .
 
-	.  reduce 13
+    $default  reduce using rule 17 (parameter_list)
 
 
-state 18
-	parameter_list : FLOAT id .  (14)
+State 15
 
-	.  reduce 14
+   13 parameter_list: INT . id
 
+    IDENTIFIER  shift, and go to state 11
 
-state 19
-	function : var_type id '(' parameter_list ')' . ';'  (4)
-	function : var_type id '(' parameter_list ')' . function_body  (5)
+    id  go to state 18
 
-	';'  shift 21
-	'{'  shift 22
-	.  error
 
-	function_body  goto 23
+State 16
 
+   14 parameter_list: FLOAT . id
 
-state 20
-	parameter_list : parameter_list ',' . INT id  (15)
-	parameter_list : parameter_list ',' . FLOAT id  (16)
+    IDENTIFIER  shift, and go to state 11
 
-	INT  shift 24
-	FLOAT  shift 25
-	.  error
+    id  go to state 19
 
 
-state 21
-	function : var_type id '(' parameter_list ')' ';' .  (4)
+State 17
 
-	.  reduce 4
+    4 function: var_type id '(' parameter_list . ')' ';'
+    5         | var_type id '(' parameter_list . ')' function_body
+   15 parameter_list: parameter_list . ',' INT id
+   16               | parameter_list . ',' FLOAT id
 
+    ')'  shift, and go to state 20
+    ','  shift, and go to state 21
 
-state 22
-	function_body : '{' . statement_list '}'  (6)
-	function_body : '{' . declaration_list statement_list '}'  (7)
 
-	INT  shift 26
-	FLOAT  shift 27
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
+State 18
 
-	id  goto 41
-	declaration  goto 42
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 45
-	statement_list  goto 46
-	matched_statement  goto 47
-	unmatched_statement  goto 48
-	declaration_list  goto 49
+   13 parameter_list: INT id .
 
+    $default  reduce using rule 13 (parameter_list)
 
-state 23
-	function : var_type id '(' parameter_list ')' function_body .  (5)
 
-	.  reduce 5
+State 19
 
+   14 parameter_list: FLOAT id .
 
-state 24
-	parameter_list : parameter_list ',' INT . id  (15)
+    $default  reduce using rule 14 (parameter_list)
 
-	IDENTIFIER  shift 10
-	.  error
 
-	id  goto 50
+State 20
 
+    4 function: var_type id '(' parameter_list ')' . ';'
+    5         | var_type id '(' parameter_list ')' . function_body
 
-state 25
-	parameter_list : parameter_list ',' FLOAT . id  (16)
+    ';'  shift, and go to state 22
+    '{'  shift, and go to state 23
 
-	IDENTIFIER  shift 10
-	.  error
+    function_body  go to state 24
 
-	id  goto 51
 
+State 21
 
-state 26
-	declaration : INT . id  (10)
+   15 parameter_list: parameter_list ',' . INT id
+   16               | parameter_list ',' . FLOAT id
 
-	IDENTIFIER  shift 10
-	.  error
+    INT    shift, and go to state 25
+    FLOAT  shift, and go to state 26
 
-	id  goto 52
 
+State 22
 
-state 27
-	declaration : FLOAT . id  (11)
+    4 function: var_type id '(' parameter_list ')' ';' .
 
-	IDENTIFIER  shift 10
-	.  error
+    $default  reduce using rule 4 (function)
 
-	id  goto 53
 
+State 23
 
-state 28
-	expression : CONSTANT .  (60)
+    6 function_body: '{' . statement_list '}'
+    7              | '{' . declaration_list statement_list '}'
 
-	.  reduce 60
+    INT         shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
 
+    declaration_list     go to state 42
+    declaration          go to state 43
+    statement_list       go to state 44
+    statement            go to state 45
+    matched_statement    go to state 46
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
 
-state 29
-	matched_statement : IF . '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF . '(' assignment ')' marker statement  (35)
-	unmatched_statement : IF . '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement  (38)
 
-	'('  shift 54
-	.  error
+State 24
 
+    5 function: var_type id '(' parameter_list ')' function_body .
 
-state 30
-	matched_statement : RETURN . ';'  (28)
-	matched_statement : RETURN . assignment ';'  (29)
+    $default  reduce using rule 5 (function)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	';'  shift 55
-	.  error
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 56
+State 25
 
+   15 parameter_list: parameter_list ',' INT . id
 
-state 31
-	matched_statement : DO . marker statement WHILE '(' marker assignment ')' ';'  (31)
-	marker : .  (68)
+    IDENTIFIER  shift, and go to state 11
 
-	.  reduce 68
+    id  go to state 51
 
-	marker  goto 57
 
+State 26
 
-state 32
-	matched_statement : WHILE . marker '(' assignment ')' marker matched_statement jump_marker  (30)
-	unmatched_statement : WHILE . marker '(' assignment ')' marker unmatched_statement jump_marker  (36)
-	marker : .  (68)
+   16 parameter_list: parameter_list ',' FLOAT . id
 
-	.  reduce 68
+    IDENTIFIER  shift, and go to state 11
 
-	marker  goto 58
+    id  go to state 52
 
 
-state 33
-	matched_statement : FOR . '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR . '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
+State 27
 
-	'('  shift 59
-	.  error
+   10 declaration: INT . id
 
+    IDENTIFIER  shift, and go to state 11
 
-state 34
-	expression : INC_OP . expression  (41)
+    id  go to state 53
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
 
-	id  goto 60
-	expression  goto 61
+State 28
 
+   11 declaration: FLOAT . id
 
-state 35
-	expression : DEC_OP . expression  (42)
+    IDENTIFIER  shift, and go to state 11
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    id  go to state 54
 
-	id  goto 60
-	expression  goto 62
 
+State 29
 
-state 36
-	expression : U_PLUS . expression  (58)
+   60 expression: CONSTANT .
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    $default  reduce using rule 60 (expression)
 
-	id  goto 60
-	expression  goto 63
 
+State 30
 
-state 37
-	expression : U_MINUS . expression  (59)
+   26 matched_statement: IF . '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement
+   35 unmatched_statement: IF . '(' assignment ')' marker statement
+   38                    | IF . '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    '('  shift, and go to state 55
 
-	id  goto 60
-	expression  goto 64
 
+State 31
 
-state 38
-	expression : '!' . expression  (57)
+   28 matched_statement: RETURN . ';'
+   29                  | RETURN . assignment ';'
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    ';'         shift, and go to state 56
 
-	id  goto 60
-	expression  goto 65
+    assignment  go to state 57
+    expression  go to state 49
+    id          go to state 50
 
 
-state 39
-	expression : '(' . expression ')'  (61)
+State 32
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+   31 matched_statement: DO . marker statement WHILE '(' marker assignment ')' ';'
 
-	id  goto 60
-	expression  goto 66
+    $default  reduce using rule 68 (marker)
 
+    marker  go to state 58
 
-state 40
-	matched_statement : '{' . statement_list '}'  (33)
-	matched_statement : '{' . '}'  (34)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	'}'  shift 67
-	.  error
+State 33
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 45
-	statement_list  goto 68
-	matched_statement  goto 47
-	unmatched_statement  goto 48
+   30 matched_statement: WHILE . marker '(' assignment ')' marker matched_statement jump_marker
+   36 unmatched_statement: WHILE . marker '(' assignment ')' marker unmatched_statement jump_marker
 
+    $default  reduce using rule 68 (marker)
 
-state 41
-	assignment : id . '=' expression  (40)
-	expression : id . '(' exp_list ')'  (62)
-	expression : id . '(' ')'  (63)
-	expression : id .  (64)
+    marker  go to state 59
 
-	'='  shift 69
-	'('  shift 70
-	EQUAL  reduce 64
-	NOT_EQUAL  reduce 64
-	GREATER_OR_EQUAL  reduce 64
-	LESS_OR_EQUAL  reduce 64
-	SHIFTLEFT  reduce 64
-	LOG_AND  reduce 64
-	LOG_OR  reduce 64
-	'<'  reduce 64
-	'>'  reduce 64
-	'+'  reduce 64
-	'-'  reduce 64
-	'*'  reduce 64
-	'/'  reduce 64
-	'%'  reduce 64
-	')'  reduce 64
-	';'  reduce 64
 
+State 34
 
-state 42
-	declaration_list : declaration . ';'  (8)
-	declaration : declaration . ',' id  (12)
+   32 matched_statement: FOR . '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR . '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
 
-	';'  shift 71
-	','  shift 72
-	.  error
+    '('  shift, and go to state 60
 
 
-state 43
-	assignment : expression .  (39)
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
+State 35
 
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	LOG_OR  shift 79
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	')'  reduce 39
-	';'  reduce 39
+   41 expression: INC_OP . expression
 
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-state 44
-	matched_statement : assignment . ';'  (27)
+    expression  go to state 61
+    id          go to state 62
 
-	';'  shift 87
-	.  error
 
+State 36
 
-state 45
-	statement_list : statement .  (22)
+   42 expression: DEC_OP . expression
 
-	.  reduce 22
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
+    expression  go to state 63
+    id          go to state 62
 
-state 46
-	function_body : '{' statement_list . '}'  (6)
-	statement_list : statement_list . marker statement  (23)
-	marker : .  (68)
 
-	'}'  shift 88
-	CONSTANT  reduce 68
-	IDENTIFIER  reduce 68
-	IF  reduce 68
-	RETURN  reduce 68
-	DO  reduce 68
-	WHILE  reduce 68
-	FOR  reduce 68
-	INC_OP  reduce 68
-	DEC_OP  reduce 68
-	U_PLUS  reduce 68
-	U_MINUS  reduce 68
-	'!'  reduce 68
-	'('  reduce 68
-	'{'  reduce 68
+State 37
 
-	marker  goto 89
+   58 expression: U_PLUS . expression
 
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-state 47
-	statement : matched_statement .  (24)
+    expression  go to state 64
+    id          go to state 62
 
-	.  reduce 24
 
+State 38
 
-state 48
-	statement : unmatched_statement .  (25)
+   59 expression: U_MINUS . expression
 
-	.  reduce 25
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
+    expression  go to state 65
+    id          go to state 62
 
-state 49
-	function_body : '{' declaration_list . statement_list '}'  (7)
-	declaration_list : declaration_list . declaration ';'  (9)
 
-	INT  shift 26
-	FLOAT  shift 27
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
+State 39
 
-	id  goto 41
-	declaration  goto 90
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 45
-	statement_list  goto 91
-	matched_statement  goto 47
-	unmatched_statement  goto 48
+   57 expression: '!' . expression
 
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-state 50
-	parameter_list : parameter_list ',' INT id .  (15)
+    expression  go to state 66
+    id          go to state 62
 
-	.  reduce 15
 
+State 40
 
-state 51
-	parameter_list : parameter_list ',' FLOAT id .  (16)
+   61 expression: '(' . expression ')'
 
-	.  reduce 16
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
+    expression  go to state 67
+    id          go to state 62
 
-state 52
-	declaration : INT id .  (10)
 
-	.  reduce 10
+State 41
 
+   33 matched_statement: '{' . statement_list '}'
+   34                  | '{' . '}'
 
-state 53
-	declaration : FLOAT id .  (11)
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
+    '}'         shift, and go to state 68
 
-	.  reduce 11
+    statement_list       go to state 69
+    statement            go to state 45
+    matched_statement    go to state 46
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
 
 
-state 54
-	matched_statement : IF '(' . assignment ')' marker matched_statement jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' . assignment ')' marker statement  (35)
-	unmatched_statement : IF '(' . assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement  (38)
+State 42
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    7 function_body: '{' declaration_list . statement_list '}'
+    9 declaration_list: declaration_list . declaration ';'
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 92
+    INT         shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
 
+    declaration          go to state 70
+    statement_list       go to state 71
+    statement            go to state 45
+    matched_statement    go to state 46
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
 
-state 55
-	matched_statement : RETURN ';' .  (28)
 
-	.  reduce 28
+State 43
 
+    8 declaration_list: declaration . ';'
+   12 declaration: declaration . ',' id
 
-state 56
-	matched_statement : RETURN assignment . ';'  (29)
+    ';'  shift, and go to state 72
+    ','  shift, and go to state 73
 
-	';'  shift 93
-	.  error
 
+State 44
 
-state 57
-	matched_statement : DO marker . statement WHILE '(' marker assignment ')' ';'  (31)
+    6 function_body: '{' statement_list . '}'
+   23 statement_list: statement_list . marker statement
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
+    '}'  shift, and go to state 74
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 94
-	matched_statement  goto 47
-	unmatched_statement  goto 48
+    $default  reduce using rule 68 (marker)
 
+    marker  go to state 75
 
-state 58
-	matched_statement : WHILE marker . '(' assignment ')' marker matched_statement jump_marker  (30)
-	unmatched_statement : WHILE marker . '(' assignment ')' marker unmatched_statement jump_marker  (36)
 
-	'('  shift 95
-	.  error
+State 45
 
+   22 statement_list: statement .
 
-state 59
-	matched_statement : FOR '(' . assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' . assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
+    $default  reduce using rule 22 (statement_list)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 96
+State 46
 
+   24 statement: matched_statement .
 
-state 60
-	expression : id . '(' exp_list ')'  (62)
-	expression : id . '(' ')'  (63)
-	expression : id .  (64)
+    $default  reduce using rule 24 (statement)
 
-	'('  shift 70
-	EQUAL  reduce 64
-	NOT_EQUAL  reduce 64
-	GREATER_OR_EQUAL  reduce 64
-	LESS_OR_EQUAL  reduce 64
-	SHIFTLEFT  reduce 64
-	LOG_AND  reduce 64
-	LOG_OR  reduce 64
-	'<'  reduce 64
-	'>'  reduce 64
-	'+'  reduce 64
-	'-'  reduce 64
-	'*'  reduce 64
-	'/'  reduce 64
-	'%'  reduce 64
-	')'  reduce 64
-	';'  reduce 64
-	','  reduce 64
 
+State 47
 
-state 61
-	expression : INC_OP expression .  (41)
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
+   25 statement: unmatched_statement .
 
-	.  reduce 41
+    $default  reduce using rule 25 (statement)
 
 
-state 62
-	expression : DEC_OP expression .  (42)
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
+State 48
 
-	.  reduce 42
+   27 matched_statement: assignment . ';'
 
+    ';'  shift, and go to state 76
 
-state 63
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	expression : U_PLUS expression .  (58)
 
-	.  reduce 58
+State 49
 
+   39 assignment: expression .
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
 
-state 64
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	expression : U_MINUS expression .  (59)
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    LOG_OR            shift, and go to state 83
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
 
-	.  reduce 59
+    $default  reduce using rule 39 (assignment)
 
 
-state 65
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	expression : '!' expression .  (57)
+State 50
 
-	.  reduce 57
+   40 assignment: id . '=' expression
+   62 expression: id . '(' exp_list ')'
+   63           | id . '(' ')'
+   64           | id .
 
+    '='  shift, and go to state 91
+    '('  shift, and go to state 92
 
-state 66
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	expression : '(' expression . ')'  (61)
+    $default  reduce using rule 64 (expression)
 
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	LOG_OR  shift 79
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	')'  shift 97
-	.  error
 
+State 51
 
-state 67
-	matched_statement : '{' '}' .  (34)
+   15 parameter_list: parameter_list ',' INT id .
 
-	.  reduce 34
+    $default  reduce using rule 15 (parameter_list)
 
 
-state 68
-	statement_list : statement_list . marker statement  (23)
-	matched_statement : '{' statement_list . '}'  (33)
-	marker : .  (68)
+State 52
 
-	'}'  shift 98
-	CONSTANT  reduce 68
-	IDENTIFIER  reduce 68
-	IF  reduce 68
-	RETURN  reduce 68
-	DO  reduce 68
-	WHILE  reduce 68
-	FOR  reduce 68
-	INC_OP  reduce 68
-	DEC_OP  reduce 68
-	U_PLUS  reduce 68
-	U_MINUS  reduce 68
-	'!'  reduce 68
-	'('  reduce 68
-	'{'  reduce 68
+   16 parameter_list: parameter_list ',' FLOAT id .
 
-	marker  goto 89
+    $default  reduce using rule 16 (parameter_list)
 
 
-state 69
-	assignment : id '=' . expression  (40)
+State 53
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+   10 declaration: INT id .
 
-	id  goto 60
-	expression  goto 99
+    $default  reduce using rule 10 (declaration)
 
 
-state 70
-	expression : id '(' . exp_list ')'  (62)
-	expression : id '(' . ')'  (63)
+State 54
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	')'  shift 100
-	.  error
+   11 declaration: FLOAT id .
 
-	id  goto 60
-	expression  goto 101
-	exp_list  goto 102
+    $default  reduce using rule 11 (declaration)
 
 
-state 71
-	declaration_list : declaration ';' .  (8)
+State 55
 
-	.  reduce 8
+   26 matched_statement: IF '(' . assignment ')' marker matched_statement jump_marker ELSE marker matched_statement
+   35 unmatched_statement: IF '(' . assignment ')' marker statement
+   38                    | IF '(' . assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement
 
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-state 72
-	declaration : declaration ',' . id  (12)
+    assignment  go to state 93
+    expression  go to state 49
+    id          go to state 50
 
-	IDENTIFIER  shift 10
-	.  error
 
-	id  goto 103
+State 56
 
+   28 matched_statement: RETURN ';' .
 
-state 73
-	expression : expression EQUAL . expression  (46)
+    $default  reduce using rule 28 (matched_statement)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
 
-	id  goto 60
-	expression  goto 104
+State 57
 
+   29 matched_statement: RETURN assignment . ';'
 
-state 74
-	expression : expression NOT_EQUAL . expression  (45)
+    ';'  shift, and go to state 94
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
 
-	id  goto 60
-	expression  goto 105
+State 58
 
+   31 matched_statement: DO marker . statement WHILE '(' marker assignment ')' ';'
 
-state 75
-	expression : expression GREATER_OR_EQUAL . expression  (47)
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    statement            go to state 95
+    matched_statement    go to state 46
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
 
-	id  goto 60
-	expression  goto 106
 
+State 59
 
-state 76
-	expression : expression LESS_OR_EQUAL . expression  (48)
+   30 matched_statement: WHILE marker . '(' assignment ')' marker matched_statement jump_marker
+   36 unmatched_statement: WHILE marker . '(' assignment ')' marker unmatched_statement jump_marker
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    '('  shift, and go to state 96
 
-	id  goto 60
-	expression  goto 107
 
+State 60
 
-state 77
-	expression : expression SHIFTLEFT . expression  (51)
+   32 matched_statement: FOR '(' . assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' . assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-	id  goto 60
-	expression  goto 108
+    assignment  go to state 97
+    expression  go to state 49
+    id          go to state 50
 
 
-state 78
-	expression : expression LOG_AND . marker expression  (44)
-	marker : .  (68)
+State 61
 
-	.  reduce 68
+   41 expression: INC_OP expression .
+   43           | expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
 
-	marker  goto 109
+    $default  reduce using rule 41 (expression)
 
 
-state 79
-	expression : expression LOG_OR . marker expression  (43)
-	marker : .  (68)
+State 62
 
-	.  reduce 68
+   62 expression: id . '(' exp_list ')'
+   63           | id . '(' ')'
+   64           | id .
 
-	marker  goto 110
+    '('  shift, and go to state 92
 
+    $default  reduce using rule 64 (expression)
 
-state 80
-	expression : expression '<' . expression  (50)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 63
 
-	id  goto 60
-	expression  goto 111
+   42 expression: DEC_OP expression .
+   43           | expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
 
+    $default  reduce using rule 42 (expression)
 
-state 81
-	expression : expression '>' . expression  (49)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 64
 
-	id  goto 60
-	expression  goto 112
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   58           | U_PLUS expression .
 
+    $default  reduce using rule 58 (expression)
 
-state 82
-	expression : expression '+' . expression  (52)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 65
 
-	id  goto 60
-	expression  goto 113
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   59           | U_MINUS expression .
 
+    $default  reduce using rule 59 (expression)
 
-state 83
-	expression : expression '-' . expression  (53)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 66
 
-	id  goto 60
-	expression  goto 114
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   57           | '!' expression .
 
+    $default  reduce using rule 57 (expression)
 
-state 84
-	expression : expression '*' . expression  (54)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 67
 
-	id  goto 60
-	expression  goto 115
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   61           | '(' expression . ')'
 
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    LOG_OR            shift, and go to state 83
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+    ')'               shift, and go to state 98
 
-state 85
-	expression : expression '/' . expression  (55)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 68
 
-	id  goto 60
-	expression  goto 116
+   34 matched_statement: '{' '}' .
 
+    $default  reduce using rule 34 (matched_statement)
 
-state 86
-	expression : expression '%' . expression  (56)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+State 69
 
-	id  goto 60
-	expression  goto 117
+   23 statement_list: statement_list . marker statement
+   33 matched_statement: '{' statement_list . '}'
 
+    '}'  shift, and go to state 99
 
-state 87
-	matched_statement : assignment ';' .  (27)
+    $default  reduce using rule 68 (marker)
 
-	.  reduce 27
+    marker  go to state 75
 
 
-state 88
-	function_body : '{' statement_list '}' .  (6)
+State 70
 
-	.  reduce 6
+    9 declaration_list: declaration_list declaration . ';'
+   12 declaration: declaration . ',' id
 
+    ';'  shift, and go to state 100
+    ','  shift, and go to state 73
 
-state 89
-	statement_list : statement_list marker . statement  (23)
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
+State 71
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 118
-	matched_statement  goto 47
-	unmatched_statement  goto 48
+    7 function_body: '{' declaration_list statement_list . '}'
+   23 statement_list: statement_list . marker statement
 
+    '}'  shift, and go to state 101
 
-state 90
-	declaration_list : declaration_list declaration . ';'  (9)
-	declaration : declaration . ',' id  (12)
+    $default  reduce using rule 68 (marker)
 
-	';'  shift 119
-	','  shift 72
-	.  error
+    marker  go to state 75
 
 
-state 91
-	function_body : '{' declaration_list statement_list . '}'  (7)
-	statement_list : statement_list . marker statement  (23)
-	marker : .  (68)
+State 72
 
-	'}'  shift 120
-	CONSTANT  reduce 68
-	IDENTIFIER  reduce 68
-	IF  reduce 68
-	RETURN  reduce 68
-	DO  reduce 68
-	WHILE  reduce 68
-	FOR  reduce 68
-	INC_OP  reduce 68
-	DEC_OP  reduce 68
-	U_PLUS  reduce 68
-	U_MINUS  reduce 68
-	'!'  reduce 68
-	'('  reduce 68
-	'{'  reduce 68
+    8 declaration_list: declaration ';' .
 
-	marker  goto 89
+    $default  reduce using rule 8 (declaration_list)
 
 
-state 92
-	matched_statement : IF '(' assignment . ')' marker matched_statement jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment . ')' marker statement  (35)
-	unmatched_statement : IF '(' assignment . ')' marker matched_statement jump_marker ELSE marker unmatched_statement  (38)
+State 73
 
-	')'  shift 121
-	.  error
+   12 declaration: declaration ',' . id
 
+    IDENTIFIER  shift, and go to state 11
 
-state 93
-	matched_statement : RETURN assignment ';' .  (29)
+    id  go to state 102
 
-	.  reduce 29
 
+State 74
 
-state 94
-	matched_statement : DO marker statement . WHILE '(' marker assignment ')' ';'  (31)
+    6 function_body: '{' statement_list '}' .
 
-	WHILE  shift 122
-	.  error
+    $default  reduce using rule 6 (function_body)
 
 
-state 95
-	matched_statement : WHILE marker '(' . assignment ')' marker matched_statement jump_marker  (30)
-	unmatched_statement : WHILE marker '(' . assignment ')' marker unmatched_statement jump_marker  (36)
+State 75
 
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
+   23 statement_list: statement_list marker . statement
 
-	id  goto 41
-	expression  goto 43
-	assignment  goto 123
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
 
+    statement            go to state 103
+    matched_statement    go to state 46
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
 
-state 96
-	matched_statement : FOR '(' assignment . ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment . ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
 
-	';'  shift 124
-	.  error
+State 76
 
+   27 matched_statement: assignment ';' .
 
-state 97
-	expression : '(' expression ')' .  (61)
+    $default  reduce using rule 27 (matched_statement)
 
-	.  reduce 61
 
+State 77
 
-state 98
-	matched_statement : '{' statement_list '}' .  (33)
+   46 expression: expression EQUAL . expression
 
-	.  reduce 33
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
+    expression  go to state 104
+    id          go to state 62
 
-state 99
-	assignment : id '=' expression .  (40)
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
 
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	LOG_OR  shift 79
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	')'  reduce 40
-	';'  reduce 40
+State 78
 
+   45 expression: expression NOT_EQUAL . expression
 
-state 100
-	expression : id '(' ')' .  (63)
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
 
-	.  reduce 63
+    expression  go to state 105
+    id          go to state 62
 
 
-state 101
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	exp_list : expression .  (65)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	LOG_OR  shift 79
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	')'  reduce 65
-	','  reduce 65
-
-
-state 102
-	expression : id '(' exp_list . ')'  (62)
-	exp_list : exp_list . ',' expression  (66)
-
-	')'  shift 125
-	','  shift 126
-	.  error
-
-
-state 103
-	declaration : declaration ',' id .  (12)
-
-	.  reduce 12
-
-
-state 104
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression EQUAL expression .  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	EQUAL  reduce 46
-	NOT_EQUAL  reduce 46
-	GREATER_OR_EQUAL  reduce 46
-	LESS_OR_EQUAL  reduce 46
-	LOG_AND  reduce 46
-	LOG_OR  reduce 46
-	'<'  reduce 46
-	'>'  reduce 46
-	')'  reduce 46
-	';'  reduce 46
-	','  reduce 46
-
-
-state 105
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression NOT_EQUAL expression .  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	EQUAL  reduce 45
-	NOT_EQUAL  reduce 45
-	GREATER_OR_EQUAL  reduce 45
-	LESS_OR_EQUAL  reduce 45
-	LOG_AND  reduce 45
-	LOG_OR  reduce 45
-	'<'  reduce 45
-	'>'  reduce 45
-	')'  reduce 45
-	';'  reduce 45
-	','  reduce 45
-
-
-state 106
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression GREATER_OR_EQUAL expression .  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	GREATER_OR_EQUAL  reduce 47
-	LESS_OR_EQUAL  reduce 47
-	LOG_AND  reduce 47
-	LOG_OR  reduce 47
-	'<'  reduce 47
-	'>'  reduce 47
-	')'  reduce 47
-	';'  reduce 47
-	','  reduce 47
-
-
-state 107
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression LESS_OR_EQUAL expression .  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	GREATER_OR_EQUAL  reduce 48
-	LESS_OR_EQUAL  reduce 48
-	LOG_AND  reduce 48
-	LOG_OR  reduce 48
-	'<'  reduce 48
-	'>'  reduce 48
-	')'  reduce 48
-	';'  reduce 48
-	','  reduce 48
-
-
-state 108
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression SHIFTLEFT expression .  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	EQUAL  reduce 51
-	NOT_EQUAL  reduce 51
-	GREATER_OR_EQUAL  reduce 51
-	LESS_OR_EQUAL  reduce 51
-	SHIFTLEFT  reduce 51
-	LOG_AND  reduce 51
-	LOG_OR  reduce 51
-	'<'  reduce 51
-	'>'  reduce 51
-	')'  reduce 51
-	';'  reduce 51
-	','  reduce 51
-
-
-state 109
-	expression : expression LOG_AND marker . expression  (44)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 60
-	expression  goto 127
-
-
-state 110
-	expression : expression LOG_OR marker . expression  (43)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 60
-	expression  goto 128
-
-
-state 111
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression '<' expression .  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	GREATER_OR_EQUAL  reduce 50
-	LESS_OR_EQUAL  reduce 50
-	LOG_AND  reduce 50
-	LOG_OR  reduce 50
-	'<'  reduce 50
-	'>'  reduce 50
-	')'  reduce 50
-	';'  reduce 50
-	','  reduce 50
-
-
-state 112
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression '>' expression .  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	SHIFTLEFT  shift 77
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	GREATER_OR_EQUAL  reduce 49
-	LESS_OR_EQUAL  reduce 49
-	LOG_AND  reduce 49
-	LOG_OR  reduce 49
-	'<'  reduce 49
-	'>'  reduce 49
-	')'  reduce 49
-	';'  reduce 49
-	','  reduce 49
-
-
-state 113
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression '+' expression .  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	EQUAL  reduce 52
-	NOT_EQUAL  reduce 52
-	GREATER_OR_EQUAL  reduce 52
-	LESS_OR_EQUAL  reduce 52
-	SHIFTLEFT  reduce 52
-	LOG_AND  reduce 52
-	LOG_OR  reduce 52
-	'<'  reduce 52
-	'>'  reduce 52
-	'+'  reduce 52
-	'-'  reduce 52
-	')'  reduce 52
-	';'  reduce 52
-	','  reduce 52
-
-
-state 114
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression '-' expression .  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	EQUAL  reduce 53
-	NOT_EQUAL  reduce 53
-	GREATER_OR_EQUAL  reduce 53
-	LESS_OR_EQUAL  reduce 53
-	SHIFTLEFT  reduce 53
-	LOG_AND  reduce 53
-	LOG_OR  reduce 53
-	'<'  reduce 53
-	'>'  reduce 53
-	'+'  reduce 53
-	'-'  reduce 53
-	')'  reduce 53
-	';'  reduce 53
-	','  reduce 53
-
-
-state 115
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression '*' expression .  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	.  reduce 54
-
-
-state 116
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression '/' expression .  (55)
-	expression : expression . '%' expression  (56)
-
-	.  reduce 55
-
-
-state 117
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	expression : expression '%' expression .  (56)
-
-	.  reduce 56
-
-
-state 118
-	statement_list : statement_list marker statement .  (23)
-
-	.  reduce 23
-
-
-state 119
-	declaration_list : declaration_list declaration ';' .  (9)
-
-	.  reduce 9
-
-
-state 120
-	function_body : '{' declaration_list statement_list '}' .  (7)
-
-	.  reduce 7
-
-
-state 121
-	matched_statement : IF '(' assignment ')' . marker matched_statement jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' . marker statement  (35)
-	unmatched_statement : IF '(' assignment ')' . marker matched_statement jump_marker ELSE marker unmatched_statement  (38)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 129
-
-
-state 122
-	matched_statement : DO marker statement WHILE . '(' marker assignment ')' ';'  (31)
-
-	'('  shift 130
-	.  error
-
-
-state 123
-	matched_statement : WHILE marker '(' assignment . ')' marker matched_statement jump_marker  (30)
-	unmatched_statement : WHILE marker '(' assignment . ')' marker unmatched_statement jump_marker  (36)
-
-	')'  shift 131
-	.  error
-
-
-state 124
-	matched_statement : FOR '(' assignment ';' . marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' . marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 132
-
-
-state 125
-	expression : id '(' exp_list ')' .  (62)
-
-	.  reduce 62
-
-
-state 126
-	exp_list : exp_list ',' . expression  (66)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 60
-	expression  goto 133
-
-
-state 127
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression LOG_AND marker expression .  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	LOG_AND  reduce 44
-	LOG_OR  reduce 44
-	')'  reduce 44
-	';'  reduce 44
-	','  reduce 44
-
-
-state 128
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression LOG_OR marker expression .  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	LOG_OR  reduce 43
-	')'  reduce 43
-	';'  reduce 43
-	','  reduce 43
-
-
-state 129
-	matched_statement : IF '(' assignment ')' marker . matched_statement jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' marker . statement  (35)
-	unmatched_statement : IF '(' assignment ')' marker . matched_statement jump_marker ELSE marker unmatched_statement  (38)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	statement  goto 134
-	matched_statement  goto 135
-	unmatched_statement  goto 48
-
-
-state 130
-	matched_statement : DO marker statement WHILE '(' . marker assignment ')' ';'  (31)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 136
-
-
-state 131
-	matched_statement : WHILE marker '(' assignment ')' . marker matched_statement jump_marker  (30)
-	unmatched_statement : WHILE marker '(' assignment ')' . marker unmatched_statement jump_marker  (36)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 137
-
-
-state 132
-	matched_statement : FOR '(' assignment ';' marker . assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker . assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 138
-
-
-state 133
-	expression : expression . LOG_OR marker expression  (43)
-	expression : expression . LOG_AND marker expression  (44)
-	expression : expression . NOT_EQUAL expression  (45)
-	expression : expression . EQUAL expression  (46)
-	expression : expression . GREATER_OR_EQUAL expression  (47)
-	expression : expression . LESS_OR_EQUAL expression  (48)
-	expression : expression . '>' expression  (49)
-	expression : expression . '<' expression  (50)
-	expression : expression . SHIFTLEFT expression  (51)
-	expression : expression . '+' expression  (52)
-	expression : expression . '-' expression  (53)
-	expression : expression . '*' expression  (54)
-	expression : expression . '/' expression  (55)
-	expression : expression . '%' expression  (56)
-	exp_list : exp_list ',' expression .  (66)
-
-	EQUAL  shift 73
-	NOT_EQUAL  shift 74
-	GREATER_OR_EQUAL  shift 75
-	LESS_OR_EQUAL  shift 76
-	SHIFTLEFT  shift 77
-	LOG_AND  shift 78
-	LOG_OR  shift 79
-	'<'  shift 80
-	'>'  shift 81
-	'+'  shift 82
-	'-'  shift 83
-	'*'  shift 84
-	'/'  shift 85
-	'%'  shift 86
-	')'  reduce 66
-	','  reduce 66
-
-
-state 134
-	unmatched_statement : IF '(' assignment ')' marker statement .  (35)
-
-	.  reduce 35
-
-
-state 135
-	statement : matched_statement .  (24)
-	matched_statement : IF '(' assignment ')' marker matched_statement . jump_marker ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' marker matched_statement . jump_marker ELSE marker unmatched_statement  (38)
-	jump_marker : .  (69)
-
-	CONSTANT  reduce 24
-	IDENTIFIER  reduce 24
-	IF  reduce 24
-	ELSE  reduce 69
-	RETURN  reduce 24
-	DO  reduce 24
-	WHILE  reduce 24
-	FOR  reduce 24
-	INC_OP  reduce 24
-	DEC_OP  reduce 24
-	U_PLUS  reduce 24
-	U_MINUS  reduce 24
-	'!'  reduce 24
-	'('  reduce 24
-	'{'  reduce 24
-	'}'  reduce 24
-
-	jump_marker  goto 139
-
-
-state 136
-	matched_statement : DO marker statement WHILE '(' marker . assignment ')' ';'  (31)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 140
-
-
-state 137
-	matched_statement : WHILE marker '(' assignment ')' marker . matched_statement jump_marker  (30)
-	unmatched_statement : WHILE marker '(' assignment ')' marker . unmatched_statement jump_marker  (36)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	matched_statement  goto 141
-	unmatched_statement  goto 142
-
-
-state 138
-	matched_statement : FOR '(' assignment ';' marker assignment . ';' marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment . ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
-
-	';'  shift 143
-	.  error
-
-
-state 139
-	matched_statement : IF '(' assignment ')' marker matched_statement jump_marker . ELSE marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' marker matched_statement jump_marker . ELSE marker unmatched_statement  (38)
-
-	ELSE  shift 144
-	.  error
-
-
-state 140
-	matched_statement : DO marker statement WHILE '(' marker assignment . ')' ';'  (31)
-
-	')'  shift 145
-	.  error
-
-
-state 141
-	matched_statement : WHILE marker '(' assignment ')' marker matched_statement . jump_marker  (30)
-	jump_marker : .  (69)
-
-	.  reduce 69
-
-	jump_marker  goto 146
-
-
-state 142
-	unmatched_statement : WHILE marker '(' assignment ')' marker unmatched_statement . jump_marker  (36)
-	jump_marker : .  (69)
-
-	.  reduce 69
-
-	jump_marker  goto 147
-
-
-state 143
-	matched_statement : FOR '(' assignment ';' marker assignment ';' . marker assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' . marker assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 148
-
-
-state 144
-	matched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE . marker matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE . marker unmatched_statement  (38)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 149
-
-
-state 145
-	matched_statement : DO marker statement WHILE '(' marker assignment ')' . ';'  (31)
-
-	';'  shift 150
-	.  error
-
-
-state 146
-	matched_statement : WHILE marker '(' assignment ')' marker matched_statement jump_marker .  (30)
-
-	.  reduce 30
-
-
-state 147
-	unmatched_statement : WHILE marker '(' assignment ')' marker unmatched_statement jump_marker .  (36)
-
-	.  reduce 36
-
-
-state 148
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker . assignment jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker . assignment jump_marker ')' marker unmatched_statement jump_marker  (37)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 151
-
-
-state 149
-	matched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE marker . matched_statement  (26)
-	unmatched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE marker . unmatched_statement  (38)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	matched_statement  goto 152
-	unmatched_statement  goto 153
-
-
-state 150
-	matched_statement : DO marker statement WHILE '(' marker assignment ')' ';' .  (31)
-
-	.  reduce 31
-
-
-state 151
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment . jump_marker ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment . jump_marker ')' marker unmatched_statement jump_marker  (37)
-	jump_marker : .  (69)
-
-	.  reduce 69
-
-	jump_marker  goto 154
-
-
-state 152
-	matched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement .  (26)
-
-	.  reduce 26
-
-
-state 153
-	unmatched_statement : IF '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement .  (38)
-
-	.  reduce 38
-
-
-state 154
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker . ')' marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker . ')' marker unmatched_statement jump_marker  (37)
-
-	')'  shift 155
-	.  error
-
-
-state 155
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' . marker matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' . marker unmatched_statement jump_marker  (37)
-	marker : .  (68)
-
-	.  reduce 68
-
-	marker  goto 156
-
-
-state 156
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker . matched_statement jump_marker  (32)
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker . unmatched_statement jump_marker  (37)
-
-	CONSTANT  shift 28
-	IDENTIFIER  shift 10
-	IF  shift 29
-	RETURN  shift 30
-	DO  shift 31
-	WHILE  shift 32
-	FOR  shift 33
-	INC_OP  shift 34
-	DEC_OP  shift 35
-	U_PLUS  shift 36
-	U_MINUS  shift 37
-	'!'  shift 38
-	'('  shift 39
-	'{'  shift 40
-	.  error
-
-	id  goto 41
-	expression  goto 43
-	assignment  goto 44
-	matched_statement  goto 157
-	unmatched_statement  goto 158
-
-
-state 157
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement . jump_marker  (32)
-	jump_marker : .  (69)
-
-	.  reduce 69
-
-	jump_marker  goto 159
-
-
-state 158
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement . jump_marker  (37)
-	jump_marker : .  (69)
-
-	.  reduce 69
-
-	jump_marker  goto 160
-
-
-state 159
-	matched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker .  (32)
-
-	.  reduce 32
-
-
-state 160
-	unmatched_statement : FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker .  (37)
-
-	.  reduce 37
-
-
-39 terminals, 19 nonterminals
-70 grammar rules, 161 states
+State 79
+
+   47 expression: expression GREATER_OR_EQUAL . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 106
+    id          go to state 62
+
+
+State 80
+
+   48 expression: expression LESS_OR_EQUAL . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 107
+    id          go to state 62
+
+
+State 81
+
+   51 expression: expression SHIFTLEFT . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 108
+    id          go to state 62
+
+
+State 82
+
+   44 expression: expression LOG_AND . marker expression
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 109
+
+
+State 83
+
+   43 expression: expression LOG_OR . marker expression
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 110
+
+
+State 84
+
+   50 expression: expression '<' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 111
+    id          go to state 62
+
+
+State 85
+
+   49 expression: expression '>' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 112
+    id          go to state 62
+
+
+State 86
+
+   52 expression: expression '+' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 113
+    id          go to state 62
+
+
+State 87
+
+   53 expression: expression '-' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 114
+    id          go to state 62
+
+
+State 88
+
+   54 expression: expression '*' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 115
+    id          go to state 62
+
+
+State 89
+
+   55 expression: expression '/' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 116
+    id          go to state 62
+
+
+State 90
+
+   56 expression: expression '%' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 117
+    id          go to state 62
+
+
+State 91
+
+   40 assignment: id '=' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 118
+    id          go to state 62
+
+
+State 92
+
+   62 expression: id '(' . exp_list ')'
+   63           | id '(' . ')'
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    ')'         shift, and go to state 119
+
+    expression  go to state 120
+    exp_list    go to state 121
+    id          go to state 62
+
+
+State 93
+
+   26 matched_statement: IF '(' assignment . ')' marker matched_statement jump_marker ELSE marker matched_statement
+   35 unmatched_statement: IF '(' assignment . ')' marker statement
+   38                    | IF '(' assignment . ')' marker matched_statement jump_marker ELSE marker unmatched_statement
+
+    ')'  shift, and go to state 122
+
+
+State 94
+
+   29 matched_statement: RETURN assignment ';' .
+
+    $default  reduce using rule 29 (matched_statement)
+
+
+State 95
+
+   31 matched_statement: DO marker statement . WHILE '(' marker assignment ')' ';'
+
+    WHILE  shift, and go to state 123
+
+
+State 96
+
+   30 matched_statement: WHILE marker '(' . assignment ')' marker matched_statement jump_marker
+   36 unmatched_statement: WHILE marker '(' . assignment ')' marker unmatched_statement jump_marker
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    assignment  go to state 124
+    expression  go to state 49
+    id          go to state 50
+
+
+State 97
+
+   32 matched_statement: FOR '(' assignment . ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment . ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    ';'  shift, and go to state 125
+
+
+State 98
+
+   61 expression: '(' expression ')' .
+
+    $default  reduce using rule 61 (expression)
+
+
+State 99
+
+   33 matched_statement: '{' statement_list '}' .
+
+    $default  reduce using rule 33 (matched_statement)
+
+
+State 100
+
+    9 declaration_list: declaration_list declaration ';' .
+
+    $default  reduce using rule 9 (declaration_list)
+
+
+State 101
+
+    7 function_body: '{' declaration_list statement_list '}' .
+
+    $default  reduce using rule 7 (function_body)
+
+
+State 102
+
+   12 declaration: declaration ',' id .
+
+    $default  reduce using rule 12 (declaration)
+
+
+State 103
+
+   23 statement_list: statement_list marker statement .
+
+    $default  reduce using rule 23 (statement_list)
+
+
+State 104
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   46           | expression EQUAL expression .
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 46 (expression)
+
+
+State 105
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   45           | expression NOT_EQUAL expression .
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 45 (expression)
+
+
+State 106
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   47           | expression GREATER_OR_EQUAL expression .
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL      shift, and go to state 77
+    NOT_EQUAL  shift, and go to state 78
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 47 (expression)
+
+
+State 107
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   48           | expression LESS_OR_EQUAL expression .
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL      shift, and go to state 77
+    NOT_EQUAL  shift, and go to state 78
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 48 (expression)
+
+
+State 108
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   51           | expression SHIFTLEFT expression .
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    '+'  shift, and go to state 86
+    '-'  shift, and go to state 87
+    '*'  shift, and go to state 88
+    '/'  shift, and go to state 89
+    '%'  shift, and go to state 90
+
+    $default  reduce using rule 51 (expression)
+
+
+State 109
+
+   44 expression: expression LOG_AND marker . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 126
+    id          go to state 62
+
+
+State 110
+
+   43 expression: expression LOG_OR marker . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 127
+    id          go to state 62
+
+
+State 111
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   50           | expression '<' expression .
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL      shift, and go to state 77
+    NOT_EQUAL  shift, and go to state 78
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 50 (expression)
+
+
+State 112
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   49           | expression '>' expression .
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL      shift, and go to state 77
+    NOT_EQUAL  shift, and go to state 78
+    SHIFTLEFT  shift, and go to state 81
+    '+'        shift, and go to state 86
+    '-'        shift, and go to state 87
+    '*'        shift, and go to state 88
+    '/'        shift, and go to state 89
+    '%'        shift, and go to state 90
+
+    $default  reduce using rule 49 (expression)
+
+
+State 113
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   52           | expression '+' expression .
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    '*'  shift, and go to state 88
+    '/'  shift, and go to state 89
+    '%'  shift, and go to state 90
+
+    $default  reduce using rule 52 (expression)
+
+
+State 114
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   53           | expression '-' expression .
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    '*'  shift, and go to state 88
+    '/'  shift, and go to state 89
+    '%'  shift, and go to state 90
+
+    $default  reduce using rule 53 (expression)
+
+
+State 115
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   54           | expression '*' expression .
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    $default  reduce using rule 54 (expression)
+
+
+State 116
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   55           | expression '/' expression .
+   56           | expression . '%' expression
+
+    $default  reduce using rule 55 (expression)
+
+
+State 117
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   56           | expression '%' expression .
+
+    $default  reduce using rule 56 (expression)
+
+
+State 118
+
+   40 assignment: id '=' expression .
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    LOG_OR            shift, and go to state 83
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+
+    $default  reduce using rule 40 (assignment)
+
+
+State 119
+
+   63 expression: id '(' ')' .
+
+    $default  reduce using rule 63 (expression)
+
+
+State 120
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   65 exp_list: expression .
+
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    LOG_OR            shift, and go to state 83
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+
+    $default  reduce using rule 65 (exp_list)
+
+
+State 121
+
+   62 expression: id '(' exp_list . ')'
+   66 exp_list: exp_list . ',' expression
+
+    ')'  shift, and go to state 128
+    ','  shift, and go to state 129
+
+
+State 122
+
+   26 matched_statement: IF '(' assignment ')' . marker matched_statement jump_marker ELSE marker matched_statement
+   35 unmatched_statement: IF '(' assignment ')' . marker statement
+   38                    | IF '(' assignment ')' . marker matched_statement jump_marker ELSE marker unmatched_statement
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 130
+
+
+State 123
+
+   31 matched_statement: DO marker statement WHILE . '(' marker assignment ')' ';'
+
+    '('  shift, and go to state 131
+
+
+State 124
+
+   30 matched_statement: WHILE marker '(' assignment . ')' marker matched_statement jump_marker
+   36 unmatched_statement: WHILE marker '(' assignment . ')' marker unmatched_statement jump_marker
+
+    ')'  shift, and go to state 132
+
+
+State 125
+
+   32 matched_statement: FOR '(' assignment ';' . marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' . marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 133
+
+
+State 126
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   44           | expression LOG_AND marker expression .
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+
+    $default  reduce using rule 44 (expression)
+
+
+State 127
+
+   43 expression: expression . LOG_OR marker expression
+   43           | expression LOG_OR marker expression .
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+
+    $default  reduce using rule 43 (expression)
+
+
+State 128
+
+   62 expression: id '(' exp_list ')' .
+
+    $default  reduce using rule 62 (expression)
+
+
+State 129
+
+   66 exp_list: exp_list ',' . expression
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    expression  go to state 134
+    id          go to state 62
+
+
+State 130
+
+   26 matched_statement: IF '(' assignment ')' marker . matched_statement jump_marker ELSE marker matched_statement
+   35 unmatched_statement: IF '(' assignment ')' marker . statement
+   38                    | IF '(' assignment ')' marker . matched_statement jump_marker ELSE marker unmatched_statement
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
+
+    statement            go to state 135
+    matched_statement    go to state 136
+    unmatched_statement  go to state 47
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
+
+
+State 131
+
+   31 matched_statement: DO marker statement WHILE '(' . marker assignment ')' ';'
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 137
+
+
+State 132
+
+   30 matched_statement: WHILE marker '(' assignment ')' . marker matched_statement jump_marker
+   36 unmatched_statement: WHILE marker '(' assignment ')' . marker unmatched_statement jump_marker
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 138
+
+
+State 133
+
+   32 matched_statement: FOR '(' assignment ';' marker . assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker . assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    assignment  go to state 139
+    expression  go to state 49
+    id          go to state 50
+
+
+State 134
+
+   43 expression: expression . LOG_OR marker expression
+   44           | expression . LOG_AND marker expression
+   45           | expression . NOT_EQUAL expression
+   46           | expression . EQUAL expression
+   47           | expression . GREATER_OR_EQUAL expression
+   48           | expression . LESS_OR_EQUAL expression
+   49           | expression . '>' expression
+   50           | expression . '<' expression
+   51           | expression . SHIFTLEFT expression
+   52           | expression . '+' expression
+   53           | expression . '-' expression
+   54           | expression . '*' expression
+   55           | expression . '/' expression
+   56           | expression . '%' expression
+   66 exp_list: exp_list ',' expression .
+
+    EQUAL             shift, and go to state 77
+    NOT_EQUAL         shift, and go to state 78
+    GREATER_OR_EQUAL  shift, and go to state 79
+    LESS_OR_EQUAL     shift, and go to state 80
+    SHIFTLEFT         shift, and go to state 81
+    LOG_AND           shift, and go to state 82
+    LOG_OR            shift, and go to state 83
+    '<'               shift, and go to state 84
+    '>'               shift, and go to state 85
+    '+'               shift, and go to state 86
+    '-'               shift, and go to state 87
+    '*'               shift, and go to state 88
+    '/'               shift, and go to state 89
+    '%'               shift, and go to state 90
+
+    $default  reduce using rule 66 (exp_list)
+
+
+State 135
+
+   35 unmatched_statement: IF '(' assignment ')' marker statement .
+
+    $default  reduce using rule 35 (unmatched_statement)
+
+
+State 136
+
+   24 statement: matched_statement .
+   26 matched_statement: IF '(' assignment ')' marker matched_statement . jump_marker ELSE marker matched_statement
+   38 unmatched_statement: IF '(' assignment ')' marker matched_statement . jump_marker ELSE marker unmatched_statement
+
+    ELSE      reduce using rule 69 (jump_marker)
+    $default  reduce using rule 24 (statement)
+
+    jump_marker  go to state 140
+
+
+State 137
+
+   31 matched_statement: DO marker statement WHILE '(' marker . assignment ')' ';'
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    assignment  go to state 141
+    expression  go to state 49
+    id          go to state 50
+
+
+State 138
+
+   30 matched_statement: WHILE marker '(' assignment ')' marker . matched_statement jump_marker
+   36 unmatched_statement: WHILE marker '(' assignment ')' marker . unmatched_statement jump_marker
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
+
+    matched_statement    go to state 142
+    unmatched_statement  go to state 143
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
+
+
+State 139
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment . ';' marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment . ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    ';'  shift, and go to state 144
+
+
+State 140
+
+   26 matched_statement: IF '(' assignment ')' marker matched_statement jump_marker . ELSE marker matched_statement
+   38 unmatched_statement: IF '(' assignment ')' marker matched_statement jump_marker . ELSE marker unmatched_statement
+
+    ELSE  shift, and go to state 145
+
+
+State 141
+
+   31 matched_statement: DO marker statement WHILE '(' marker assignment . ')' ';'
+
+    ')'  shift, and go to state 146
+
+
+State 142
+
+   30 matched_statement: WHILE marker '(' assignment ')' marker matched_statement . jump_marker
+
+    $default  reduce using rule 69 (jump_marker)
+
+    jump_marker  go to state 147
+
+
+State 143
+
+   36 unmatched_statement: WHILE marker '(' assignment ')' marker unmatched_statement . jump_marker
+
+    $default  reduce using rule 69 (jump_marker)
+
+    jump_marker  go to state 148
+
+
+State 144
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' . marker assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' . marker assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 149
+
+
+State 145
+
+   26 matched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE . marker matched_statement
+   38 unmatched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE . marker unmatched_statement
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 150
+
+
+State 146
+
+   31 matched_statement: DO marker statement WHILE '(' marker assignment ')' . ';'
+
+    ';'  shift, and go to state 151
+
+
+State 147
+
+   30 matched_statement: WHILE marker '(' assignment ')' marker matched_statement jump_marker .
+
+    $default  reduce using rule 30 (matched_statement)
+
+
+State 148
+
+   36 unmatched_statement: WHILE marker '(' assignment ')' marker unmatched_statement jump_marker .
+
+    $default  reduce using rule 36 (unmatched_statement)
+
+
+State 149
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker . assignment jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker . assignment jump_marker ')' marker unmatched_statement jump_marker
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+
+    assignment  go to state 152
+    expression  go to state 49
+    id          go to state 50
+
+
+State 150
+
+   26 matched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE marker . matched_statement
+   38 unmatched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE marker . unmatched_statement
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
+
+    matched_statement    go to state 153
+    unmatched_statement  go to state 154
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
+
+
+State 151
+
+   31 matched_statement: DO marker statement WHILE '(' marker assignment ')' ';' .
+
+    $default  reduce using rule 31 (matched_statement)
+
+
+State 152
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment . jump_marker ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment . jump_marker ')' marker unmatched_statement jump_marker
+
+    $default  reduce using rule 69 (jump_marker)
+
+    jump_marker  go to state 155
+
+
+State 153
+
+   26 matched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE marker matched_statement .
+
+    $default  reduce using rule 26 (matched_statement)
+
+
+State 154
+
+   38 unmatched_statement: IF '(' assignment ')' marker matched_statement jump_marker ELSE marker unmatched_statement .
+
+    $default  reduce using rule 38 (unmatched_statement)
+
+
+State 155
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker . ')' marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker . ')' marker unmatched_statement jump_marker
+
+    ')'  shift, and go to state 156
+
+
+State 156
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' . marker matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' . marker unmatched_statement jump_marker
+
+    $default  reduce using rule 68 (marker)
+
+    marker  go to state 157
+
+
+State 157
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker . matched_statement jump_marker
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker . unmatched_statement jump_marker
+
+    CONSTANT    shift, and go to state 29
+    IDENTIFIER  shift, and go to state 11
+    IF          shift, and go to state 30
+    RETURN      shift, and go to state 31
+    DO          shift, and go to state 32
+    WHILE       shift, and go to state 33
+    FOR         shift, and go to state 34
+    INC_OP      shift, and go to state 35
+    DEC_OP      shift, and go to state 36
+    U_PLUS      shift, and go to state 37
+    U_MINUS     shift, and go to state 38
+    '!'         shift, and go to state 39
+    '('         shift, and go to state 40
+    '{'         shift, and go to state 41
+
+    matched_statement    go to state 158
+    unmatched_statement  go to state 159
+    assignment           go to state 48
+    expression           go to state 49
+    id                   go to state 50
+
+
+State 158
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement . jump_marker
+
+    $default  reduce using rule 69 (jump_marker)
+
+    jump_marker  go to state 160
+
+
+State 159
+
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement . jump_marker
+
+    $default  reduce using rule 69 (jump_marker)
+
+    jump_marker  go to state 161
+
+
+State 160
+
+   32 matched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker matched_statement jump_marker .
+
+    $default  reduce using rule 32 (matched_statement)
+
+
+State 161
+
+   37 unmatched_statement: FOR '(' assignment ';' marker assignment ';' marker assignment jump_marker ')' marker unmatched_statement jump_marker .
+
+    $default  reduce using rule 37 (unmatched_statement)

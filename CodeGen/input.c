@@ -5,9 +5,9 @@
 
 int main (){
 
-	int a, b, t ,i
+	int a, b, t ,i;
 	int d;
-	a = 5;
+	a = 2;
 	b= 8;
 	t = 9;
 	while(t < 15) {
